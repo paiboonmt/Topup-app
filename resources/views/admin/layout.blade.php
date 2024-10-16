@@ -99,44 +99,62 @@
             </ul>
           </li> --}}
 
-          {{-- Dashboard --}}
-          <li class="nav-item">
-            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
+            {{-- Dashboard --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                    Dashboard
+                </p>
+                </a>
+            </li>
 
-          <li class="nav-item  {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-credit-card"></i>
-              <p>
-                Topup
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
+            {{-- Topup --}}
+            <li class="nav-item  {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-credit-card"></i>
+                <p>
+                    Topup
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+                </a>
 
-            <ul class="nav nav-treeview">
+                <ul class="nav nav-treeview">
 
-                <li class="nav-item">
-                  <a href="{{ route('admin.topup_index') }}" class="nav-link {{ request()->routeIs('admin.topup_index') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Topup money</p>
-                  </a>
-                </li>
+                    <li class="nav-item">
+                    <a href="{{ route('admin.topup_index') }}" class="nav-link {{ request()->routeIs('admin.topup_index') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Topup money</p>
+                    </a>
+                    </li>
 
-                <li class="nav-item">
-                  <a href="{{ route('admin.topup_show') }}" class="nav-link {{ request()->routeIs('admin.topup_show') ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Check money</p>
-                  </a>
-                </li>
+                    <li class="nav-item">
+                    <a href="{{ route('admin.topup_show') }}" class="nav-link {{ request()->routeIs('admin.topup_show') ? 'active' : '' }}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Check money</p>
+                    </a>
+                    </li>
 
-            </ul>
+                </ul>
 
-          </li>
+            </li>
+
+            {{-- Trainer --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.trainer_index') }}"
+                class="nav-link {{ request()->routeIs(['admin.trainer_index','admin.trainer_create','admin.trainer_show']) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-ninja"></i>
+                    <p>Trainer</p>
+                </a>
+            </li>
+
+            {{-- report --}}
+            <li class="nav-item">
+                <a href="{{ route('admin.report_index') }}" class="nav-link {{ request()->routeIs('admin.report_index') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-file-signature"></i>
+                    <p>Report</p>
+                </a>
+            </li>
 
         </ul>
       </nav>
