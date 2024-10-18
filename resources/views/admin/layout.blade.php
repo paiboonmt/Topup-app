@@ -14,9 +14,12 @@
   <link rel="stylesheet" href="{{ asset('lte/plugins/fontawesome-free/css/all.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
+  {{-- sweetalert2 --}}
+  <link rel="stylesheet" href="{{ asset('lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  @include('admin.datatable_header')
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="sidebar-mini layout-fixed" style="height: auto;">
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -67,10 +70,8 @@
             class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Topup money</span>
     </a>
-
     <!-- Sidebar -->
     <div class="sidebar">
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -139,6 +140,33 @@
 
             </li>
 
+            {{-- Card --}}
+            <li class="nav-item {{ request()->routeIs(['admin.card_index','admin.card_show']) ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->routeIs(['admin.card_index','admin.card_show']) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-credit-card"></i>
+                    <p>
+                        Card
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('admin.card_index') }}" class="nav-link {{ request()->routeIs('admin.card_index') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Card Register</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.card_show') }}" class="nav-link {{ request()->routeIs('admin.card_show') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Card Check</p>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+
             {{-- Trainer --}}
             <li class="nav-item">
                 <a href="{{ route('admin.trainer_index') }}"
@@ -182,5 +210,31 @@
 <script src="{{ asset('lte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('lte/dist/js/adminlte.min.js') }}"></script>
+{{-- sweetalert2 --}}
+<script src="{{ asset('lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+{{-- datatable --}}
+@include('admin.datatable_footer')
+
+<script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": ["excel"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+</script>
+
+
+
 </body>
 </html>

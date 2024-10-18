@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\ProfileController;
@@ -26,18 +27,45 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::middleware(['auth','admin'])->group(function(){
-    //Dashboard
-    Route::get('/admin/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
-    //Topup
-    Route::get('/admin/topup_index',[TopupController::class,'index'])->name('admin.topup_index');
-    Route::get('/admin/topup_show',[TopupController::class,'topup_show'])->name('admin.topup_show');
-    //Trainer
-    Route::get('/admin/trainer',[TrainerController::class,'index'])->name('admin.trainer_index');
-    Route::get('/admin/trainer_create',[TrainerController::class,'create'])->name('admin.trainer_create');
-    Route::post('/admin/trainer_store',[TrainerController::class,'store'])->name('admin.trainer_store');
-    Route::get('/admin/trainer_show/{id}',[TrainerController::class,'show'])->name('admin.trainer_show');
-    Route::post('/admin/trainer_update/{id}',[TrainerController::class,'update'])->name('admin.trainer_update');
-    Route::delete('/admin/trainer_destroy/{id}',[TrainerController::class,'destroy'])->name('admin.trainer_destroy');
+
+    // AdminController
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/admin/dashboard','index')->name('admin.dashboard');
+    });
+
+    // TopupController
+    Route::controller(TopupController::class)->group(function(){
+        Route::get('/admin/topup_index','index')->name('admin.topup_index');
+        Route::get('/admin/topup_show','topup_show')->name('admin.topup_show');
+        Route::post('admin/topup_check','check')->name('admin.topup_check');
+        Route::post('admin/topup_store','store')->name('admin.topup_store');
+    });
+
+    // TrainerController
+    Route::controller(TrainerController::class)->group(function(){
+        Route::get('/admin/trainer','index')->name('admin.trainer_index');
+        Route::get('/admin/trainer_create','create')->name('admin.trainer_create');
+        Route::get('/admin/trainer_show/{id}','show')->name('admin.trainer_show');
+        Route::post('/admin/trainer_store','store')->name('admin.trainer_store');
+        Route::post('/admin/trainer_update/{id}','update')->name('admin.trainer_update');
+        Route::delete('/admin/trainer_destroy/{id}','destroy')->name('admin.trainer_destroy');
+    });
+
+    // CardController
+    Route::controller(CardController::class)->group(function () {
+        Route::get('/admin/card', 'index')->name('admin.card_index');
+        Route::post('/admin/card_create', 'create')->name('admin.card_create');
+        Route::post('/admin/card_store', 'store')->name('admin.card_store');
+        Route::get('/admin/card_show', 'show')->name('admin.card_show');
+        Route::get('/admin/card_edit', 'edit')->name('admin.card_edit');
+        Route::delete('/admin/card_destroy/{id}','destroy')->name('admin.card_destroy');
+    });
+
+    Route::controller(CardController::class)->group(function () {
+
+    });
+
+
     //Report
     Route::get('/admin/report',[TrainerController::class,'index'])->name('admin.report_index');
 });
