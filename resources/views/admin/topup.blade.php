@@ -100,13 +100,52 @@
         @endif
 
 
+        @if (session('topup'))
+            <script>
+                Swal.fire({
+                    title: "Good job!",
+                    text: "{{ session('topup') }}",
+                    icon: "success"
+                });
+            </script>
+        @endif
+
+
 
     </div>
 
     <div class="col-8 p-2">
-        <div class="card p-2">
-
-        </div>
+        @if (session('status'))
+            <div class="card p-2">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>หมายเลข</th>
+                            <th>จำนวนเงิน</th>
+                            <th>วันที่เติมเงิน</th>
+                            <th>วันหมดอายุบัตร</th>
+                            <th>ประเภทการจ่าย</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $i=1;
+                        @endphp
+                            @foreach ( session('code') as $item)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $item->card }}</td>
+                                    <td>{{ number_format($item->total,2) }}</td>
+                                    <td>{{ date('d-m-Y',strtotime($item->created_at)) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($item->date_expiry)->format('D j M y') }}</td>
+                                    <td>{{ $item->method }}</td>
+                                </tr>
+                            @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
     </div>
 </div>
 

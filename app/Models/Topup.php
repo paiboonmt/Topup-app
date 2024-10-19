@@ -14,6 +14,9 @@ class Topup extends Model
         'discount',
         'payment',
         'date_expiry',
-        'comment'
+        'comment',
+        'total',
+        'status',
+        'method',
     ];
 }

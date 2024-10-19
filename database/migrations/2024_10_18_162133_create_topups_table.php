@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('payment');
             $table->date('date_expiry');
             $table->text('comment');
+            $table->decimal('total',8,2);
+            $table->integer('status');
+            $table->string('method');
             $table->timestamps();
         });
     }

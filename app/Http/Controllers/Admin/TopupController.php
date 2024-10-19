@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Card;
 use App\Models\Topup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class TopupController extends Controller
 {
@@ -19,7 +21,8 @@ class TopupController extends Controller
 
     public function topup_show()
     {
-        return view('admin.topup_show');
+        $data = Topup::all();
+        return view('admin.topup_show',compact('data'));
     }
 
     public function check( Request $request)
@@ -41,11 +44,30 @@ class TopupController extends Controller
         $data = Card::where('card',$card)->first(); // นำข้อมูลไปแสดง
 
         if ($data->status != 1 ) {
+
             return redirect()->back()->with('error','หมายเลขบัตรไม่สามารถใช้งานได้ ต้องยืนยัน สถานะ บัตร');
+
+        } else {
+            $countTopup = Topup::where('card',$card)->count();
+            if ($countTopup == 0) {
+                session(['data' => $data]);
+                return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
+            } else {
+                // topup table
+                $code = DB::table('topups')->where('card',$card)->get();
+                // 0 ยังไม่เปิดใช้งาน // 1 เปิดใช้งานแล้ว
+                if ($code[0]->status == 0) {
+                    session(['data' => $data]);
+                    return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
+                } else {
+                    // Session::forget('code');
+                    session(['code'=>$code]);
+                    return redirect()->back()->with('status','หมายเลขเปิดใช้งานแล้ว');
+                }
+            }
         }
 
-        session([ 'data' => $data ]);
-        return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
+
 
     }
 
@@ -62,25 +84,52 @@ class TopupController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate(
             [
                 'card'   => 'required',
                 'price'  => 'required',
-                'discount'  => 'required',
                 'payment'  => 'required',
                 'date_expiry'  => 'required',
-                'comment'  => 'required',
             ]
         );
 
-        Topup::create(
-            [
-                'card' => $request->card,
-            ]
-        );
+        if ($request->discount == 0) {
 
-        return redirect()->back();
+            $total =  $request->price;
 
+            Topup::create(
+                [
+                    'card' => $request->card,
+                    'price' => $request->price,
+                    'discount' => $request->discount,
+                    'payment' => $request->payment,
+                    'date_expiry' => $request->date_expiry,
+                    'comment' => $request->comment,
+                    'total' => $total,
+                ]
+            );
+
+        } else {
+
+            $discount = $request->discount;
+            $price = $request->price;
+            $discount =  ($price * $discount) / 100 ;
+            $total =  $price - $discount;
+            Topup::create(
+                [
+                    'card'        => $request->card,
+                    'price'       => $request->price,
+                    'discount'    => $request->discount,
+                    'payment'     => $request->payment,
+                    'date_expiry' => $request->date_expiry,
+                    'comment'     => $request->comment,
+                    'total'       => $total,
+                ]
+            );
+        }
+
+        return redirect()->back()->with('topup','เติมเงินสำเร็จ');
     }
 
     /**

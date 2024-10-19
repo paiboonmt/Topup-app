@@ -15,7 +15,9 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
   {{-- sweetalert2 --}}
-  <link rel="stylesheet" href="{{ asset('lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
+  {{-- bootstrap4-toggle --}}
+  <link rel="stylesheet" href="{{ asset('toggle/bootstrap4-toggle.min.css') }}">
   @include('admin.datatable_header')
 
 </head>
@@ -211,7 +213,9 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('lte/dist/js/adminlte.min.js') }}"></script>
 {{-- sweetalert2 --}}
-<script src="{{ asset('lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('sweetalert2/sweetalert2.all.min.js') }}"></script>
+{{-- bootstrap4-toggle --}}
+<script src="{{ asset('toggle/bootstrap4-toggle.min.js') }}"></script>
 {{-- datatable --}}
 @include('admin.datatable_footer')
 
