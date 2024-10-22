@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Card;
+use App\Models\CardRecord;
 use App\Models\Topup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -16,6 +18,8 @@ class TopupController extends Controller
      */
     public function index()
     {
+        // Session::forget('code');
+        // Session::forget('topopDetail');
         return view('admin.topup');
     }
 
@@ -42,6 +46,10 @@ class TopupController extends Controller
         }
 
         $data = Card::where('card',$card)->first(); // นำข้อมูลไปแสดง
+        CardRecord::where('card',$card)->get();
+        // $topopDetail = topup_detail::where('card',$card)->get();
+
+        // dd($topopDetail);
 
         if ($data->status != 1 ) {
 
@@ -58,17 +66,16 @@ class TopupController extends Controller
                 // 0 ยังไม่เปิดใช้งาน // 1 เปิดใช้งานแล้ว
                 if ($code[0]->status == 0) {
                     session(['data' => $data]);
+                    // session(['topopDetail' => $topopDetail]);
                     return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
                 } else {
                     // Session::forget('code');
                     session(['code'=>$code]);
+                    // session(['topopDetail' => $topopDetail]);
                     return redirect()->back()->with('status','หมายเลขเปิดใช้งานแล้ว');
                 }
             }
         }
-
-
-
     }
 
     /**
@@ -100,15 +107,33 @@ class TopupController extends Controller
 
             Topup::create(
                 [
-                    'card' => $request->card,
-                    'price' => $request->price,
-                    'discount' => $request->discount,
-                    'payment' => $request->payment,
-                    'date_expiry' => $request->date_expiry,
-                    'comment' => $request->comment,
-                    'total' => $total,
+                    'card'          => $request->card,
+                    'price'         => $request->price,
+                    'discount'      => $request->discount,
+                    'payment'       => $request->payment,
+                    'date_expiry'   => $request->date_expiry,
+                    'comment'       => $request->comment,
+                    'status'        => 1,
+                    'method'        => $request->method,
+                    'total'         => $total,
                 ]
             );
+
+            // topup_detail::create(
+            //     [
+            //         'card'          => $request->card,
+            //         'price'         => $request->price,
+            //         'discount'      => $request->discount,
+            //         'payment'       => $request->payment,
+            //         'date_expiry'   => $request->date_expiry,
+            //         'comment'       => $request->comment,
+            //         'status'        => 1,
+            //         'method'        => $request->method,
+            //         'total'         => $total,
+            //         'user'          => Auth::user()->name,
+            //         'trainer'       => '',
+            //     ]
+            // );
 
         } else {
 
@@ -124,9 +149,28 @@ class TopupController extends Controller
                     'payment'     => $request->payment,
                     'date_expiry' => $request->date_expiry,
                     'comment'     => $request->comment,
+                    'status'      => 1,
+                    'method'      => $request->method,
                     'total'       => $total,
                 ]
             );
+
+            // topup_detail::create(
+            //     [
+            //         'card'          => $request->card,
+            //         'price'         => $request->price,
+            //         'discount'      => $request->discount,
+            //         'payment'       => $request->payment,
+            //         'date_expiry'   => $request->date_expiry,
+            //         'comment'       => $request->comment,
+            //         'status'        => 1,
+            //         'method'        => 'Topup',
+            //         'total'         => $total,
+            //         'user'          => Auth::user()->name,
+            //         'trainer'       => '',
+            //     ]
+            // );
+
         }
 
         return redirect()->back()->with('topup','เติมเงินสำเร็จ');
@@ -137,7 +181,7 @@ class TopupController extends Controller
      */
     public function show(string $id)
     {
-
+        dd($id);
     }
 
     /**

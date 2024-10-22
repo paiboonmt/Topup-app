@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('topups', function (Blueprint $table) {
+        Schema::create('card_records', function (Blueprint $table) {
             $table->id();
             $table->string('card');
             $table->decimal('price',8,2);
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('total',8,2);
             $table->integer('status')->default(0);
             $table->string('method');
+            $table->string('user');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('topups');
+        Schema::dropIfExists('card_records');
     }
 };

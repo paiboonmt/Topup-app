@@ -92,6 +92,7 @@
                         <label>หมายเหตุฯ</label>
                         <textarea class="form-control" name="comment" rows="3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem repellendus earum cumque?</textarea>
                     </div>
+                    <input type="text" name="method"  value="topup">
 
                     <button class="btn btn-success col"><i class="fas fa-database"></i> | บันทึกข้อมูล</button>
                 </form>
@@ -110,40 +111,90 @@
             </script>
         @endif
 
-
-
     </div>
 
     <div class="col-8 p-2">
         @if (session('status'))
-            <div class="card p-2">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <th>หมายเลข</th>
-                            <th>จำนวนเงิน</th>
-                            <th>วันที่เติมเงิน</th>
-                            <th>วันหมดอายุบัตร</th>
-                            <th>ประเภทการจ่าย</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $i=1;
-                        @endphp
-                            @foreach ( session('code') as $item)
-                                <tr>
-                                    <td>{{ $i++ }}</td>
-                                    <td>{{ $item->card }}</td>
-                                    <td>{{ number_format($item->total,2) }}</td>
-                                    <td>{{ date('d-m-Y',strtotime($item->created_at)) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->date_expiry)->format('D j M y') }}</td>
-                                    <td>{{ $item->method }}</td>
-                                </tr>
-                            @endforeach
-                    </tbody>
-                </table>
+            {{-- <div class="row">
+                <div class="col">
+                    <div class="card p-2">
+                        <div class="card-header">
+                            ประวัติการเติมเงิน
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>หมายเลข</th>
+                                        <th>จำนวนเงิน</th>
+                                        <th>วันที่เติมเงิน</th>
+                                        <th>วันหมดอายุบัตร</th>
+                                        <th>ประเภทการจ่าย</th>
+                                        <th>เช็ค</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $i=1;
+                                    @endphp
+                                        @foreach ( session('code') as $item)
+                                            <tr>
+                                                <td>{{ $i++ }}</td>
+                                                <td>{{ $item->card }}</td>
+                                                <td>{{ number_format($item->total,2) }}</td>
+                                                <td>{{ date('d-m-Y',strtotime($item->created_at)) }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item->date_expiry)->format('D j M y') }}</td>
+                                                <td>{{ $item->method }}</td>
+                                                <td>
+                                                    <a href="" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-binoculars"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+            <div class="row">
+                <div class="col">
+                    <div class="card p-2">
+                        <div class="card-header">
+                            ประวัติการใช้งาน
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>หมายเลข</th>
+                                        <th>จำนวนเงิน</th>
+                                        <th>วันที่เติมเงิน</th>
+                                        <th>วันหมดอายุบัตร</th>
+                                        <th>ประเภทการใช้งาน</th>
+                                        <th>ผู้ใช้งาน</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   @foreach (session('topopDetail') as $t)
+                                       <tr>
+                                            <td>{{ $t->id }}</td>
+                                            <td>{{ $t->card }}</td>
+                                            <td>{{ number_format($t->total,2)}}</td>
+                                            <td>{{ date('d-m-Y',strtotime($t->created_at)) }}</td>
+                                            <td>{{ date('d-m-Y',strtotime($t->date_expiry)) }}</td>
+                                            <td>{{ $t->method }}</td>
+                                            <td>{{ $t->user }}</td>
+                                       </tr>
+                                   @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         @endif
     </div>
