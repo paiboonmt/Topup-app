@@ -92,7 +92,8 @@
                         <label>หมายเหตุฯ</label>
                         <textarea class="form-control" name="comment" rows="3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem repellendus earum cumque?</textarea>
                     </div>
-                    <input type="text" name="method"  value="topup">
+
+                    <input type="text" name="method" value="topup">
 
                     <button class="btn btn-success col"><i class="fas fa-database"></i> | บันทึกข้อมูล</button>
                 </form>
@@ -179,7 +180,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   @foreach (session('topopDetail') as $t)
+                                   @foreach (session('card_record') as $t)
                                        <tr>
                                             <td>{{ $t->id }}</td>
                                             <td>{{ $t->card }}</td>

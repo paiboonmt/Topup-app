@@ -19,6 +19,5 @@ class CardRecord extends Model
         'status',
         'method',
         'user',
-        'trainer',
     ];
 }

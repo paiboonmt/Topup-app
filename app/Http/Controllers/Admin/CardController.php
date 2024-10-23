@@ -56,6 +56,8 @@ class CardController extends Controller
             'status' => $request->status,
             'code' => $request->code,
         ]);
+
+
         return redirect()->back()->with('success','เพื่มข้อมูลบัตรสำเร็จ');
     }
 

@@ -41,37 +41,43 @@ class TopupController extends Controller
 
         $count = Card::where('card',$card)->count(); // นับจำนวนแถวในตาราง cards
 
-        if ($count != 1) {
+        if ($count != 1 ) {
             return redirect()->back()->with('error','หมายเลขไม่ได้ลงทะเบียน');
         }
 
         $data = Card::where('card',$card)->first(); // นำข้อมูลไปแสดง
-        CardRecord::where('card',$card)->get();
-        // $topopDetail = topup_detail::where('card',$card)->get();
 
-        // dd($topopDetail);
+        $card_record = CardRecord::where('card',$card)->get();
+
+        // dd($card_record);
 
         if ($data->status != 1 ) {
 
             return redirect()->back()->with('error','หมายเลขบัตรไม่สามารถใช้งานได้ ต้องยืนยัน สถานะ บัตร');
 
         } else {
+
             $countTopup = Topup::where('card',$card)->count();
-            if ($countTopup == 0) {
+
+            if ( $countTopup == 0 ) {
+
                 session(['data' => $data]);
                 return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
+
             } else {
+
                 // topup table
                 $code = DB::table('topups')->where('card',$card)->get();
+
                 // 0 ยังไม่เปิดใช้งาน // 1 เปิดใช้งานแล้ว
                 if ($code[0]->status == 0) {
-                    session(['data' => $data]);
-                    // session(['topopDetail' => $topopDetail]);
+                    // session(['data' => $data]);
+                    session(['card_record' => $card_record]);
                     return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
                 } else {
                     // Session::forget('code');
-                    session(['code'=>$code]);
-                    // session(['topopDetail' => $topopDetail]);
+                    // session(['code'=>$code]);
+                    session(['card_record' => $card_record]);
                     return redirect()->back()->with('status','หมายเลขเปิดใช้งานแล้ว');
                 }
             }
@@ -92,6 +98,8 @@ class TopupController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->input());
+
         $request->validate(
             [
                 'card'   => 'required',
@@ -102,8 +110,9 @@ class TopupController extends Controller
         );
 
         if ($request->discount == 0) {
-
             $total =  $request->price;
+
+            // เก็บประวัตการเติมเงิน
 
             Topup::create(
                 [
@@ -113,27 +122,27 @@ class TopupController extends Controller
                     'payment'       => $request->payment,
                     'date_expiry'   => $request->date_expiry,
                     'comment'       => $request->comment,
+                    'total'         => $total,
                     'status'        => 1,
                     'method'        => $request->method,
-                    'total'         => $total,
                 ]
             );
 
-            // topup_detail::create(
-            //     [
-            //         'card'          => $request->card,
-            //         'price'         => $request->price,
-            //         'discount'      => $request->discount,
-            //         'payment'       => $request->payment,
-            //         'date_expiry'   => $request->date_expiry,
-            //         'comment'       => $request->comment,
-            //         'status'        => 1,
-            //         'method'        => $request->method,
-            //         'total'         => $total,
-            //         'user'          => Auth::user()->name,
-            //         'trainer'       => '',
-            //     ]
-            // );
+            // เก็บประวัติการใช้งานทุกอย่าง
+            CardRecord::create(
+                [
+                    'card'          => $request->card,
+                    'price'         => $request->price,
+                    'discount'      => $request->discount,
+                    'payment'       => $request->payment,
+                    'date_expiry'   => $request->date_expiry,
+                    'comment'       => $request->comment,
+                    'total'         => $total,
+                    'status'        => 1,
+                    'method'        => $request->method,
+                    'user'          => Auth::user()->name,
+                ]
+            );
 
         } else {
 
@@ -141,6 +150,7 @@ class TopupController extends Controller
             $price = $request->price;
             $discount =  ($price * $discount) / 100 ;
             $total =  $price - $discount;
+
             Topup::create(
                 [
                     'card'        => $request->card,
@@ -155,21 +165,21 @@ class TopupController extends Controller
                 ]
             );
 
-            // topup_detail::create(
-            //     [
-            //         'card'          => $request->card,
-            //         'price'         => $request->price,
-            //         'discount'      => $request->discount,
-            //         'payment'       => $request->payment,
-            //         'date_expiry'   => $request->date_expiry,
-            //         'comment'       => $request->comment,
-            //         'status'        => 1,
-            //         'method'        => 'Topup',
-            //         'total'         => $total,
-            //         'user'          => Auth::user()->name,
-            //         'trainer'       => '',
-            //     ]
-            // );
+            CardRecord::create(
+                [
+                    'card' => $request->card,
+                    'price' => $request->price,
+                    'discount' => $request->discount,
+                    'payment' => $request->payment,
+                    'date_expiry' => $request->date_expiry,
+                    'comment' => $request->comment,
+                    'total' => $total,
+                    'status' => 1,
+                    'method' => $request->method,
+                    'user' => Auth::user()->name,
+                    'trainer' => '',
+                ]
+            );
 
         }
 
