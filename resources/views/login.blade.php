@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Topup-app | Log in</title>
-
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -14,6 +12,8 @@
   <link rel="stylesheet" href="{{ asset('lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('lte/dist/css/adminlte.min.css') }}">
+  {{-- login --}}
+  <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -27,8 +27,12 @@
 
       <form action="{{ route('login') }}" method="post">
         @csrf
-
         {{-- Email --}}
+
+        @error('email')
+            <span style="font-size: 12px;color:red">{{ $message }}</span>
+        @enderror
+
         <div class="input-group mb-3">
           <input class="form-control" placeholder="Email" type="email" name="email" :value="old('email')" required autofocus autocomplete="username">
           <div class="input-group-append">
@@ -36,10 +40,12 @@
               <span class="fas fa-envelope"></span>
             </div>
           </div>
-
-          <x-input-error :messages="$errors->get('email')" class="mt-2" />
-
         </div>
+
+
+        @error('password')
+            <span style="font-size: 12px;color:red">{{ $message }}</span>
+        @enderror
 
         {{-- Password --}}
         <div class="input-group mb-3">
@@ -49,9 +55,6 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
-
-          <x-input-error :messages="$errors->get('password')" class="mt-2" />
-
         </div>
 
         {{-- submit --}}

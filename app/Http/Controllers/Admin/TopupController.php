@@ -39,17 +39,13 @@ class TopupController extends Controller
 
         $card = $request->card;
 
-        $count = Card::where('card',$card)->count(); // นับจำนวนแถวในตาราง cards
+        $count = Card::where('card',$card)->count();
 
         if ($count != 1 ) {
             return redirect()->back()->with('error','หมายเลขไม่ได้ลงทะเบียน');
         }
 
         $data = Card::where('card',$card)->first(); // นำข้อมูลไปแสดง
-
-        $card_record = CardRecord::where('card',$card)->get();
-
-        // dd($card_record);
 
         if ($data->status != 1 ) {
 
@@ -66,19 +62,18 @@ class TopupController extends Controller
 
             } else {
 
-                // topup table
                 $code = DB::table('topups')->where('card',$card)->get();
 
-                // 0 ยังไม่เปิดใช้งาน // 1 เปิดใช้งานแล้ว
                 if ($code[0]->status == 0) {
-                    // session(['data' => $data]);
-                    session(['card_record' => $card_record]);
-                    return redirect()->back()->with('check','หมายเลขบัตรสามารถใช้งานได้');
+
+                    return redirect()->back();
+
                 } else {
-                    // Session::forget('code');
-                    // session(['code'=>$code]);
+
+                    $card_record = CardRecord::where('card',$card)->get();
                     session(['card_record' => $card_record]);
                     return redirect()->back()->with('status','หมายเลขเปิดใช้งานแล้ว');
+
                 }
             }
         }
@@ -97,9 +92,6 @@ class TopupController extends Controller
      */
     public function store(Request $request)
     {
-
-        // dd($request->input());
-
         $request->validate(
             [
                 'card'   => 'required',
@@ -108,6 +100,8 @@ class TopupController extends Controller
                 'date_expiry'  => 'required',
             ]
         );
+
+        dd($request->input());
 
         if ($request->discount == 0) {
             $total =  $request->price;
