@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Trainer\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -65,14 +66,16 @@ Route::middleware(['auth','admin'])->group(function(){
 
     });
 
-
     //Report
     Route::get('/admin/report',[TrainerController::class,'index'])->name('admin.report_index');
 });
 
-// User routes
-Route::middleware(['auth','user'])->group(function(){
 
+Route::middleware(['auth','trainer'])->group(function(){
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/trainer/dashboard','index')->name('trainer.dashboard');
+        Route::get('/trainer/qrscan','qrscan')->name('trainer.qrscan');
+    });
 });
 
 require __DIR__.'/auth.php';
