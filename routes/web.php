@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Trainer\HomeController;
+use App\Http\Controllers\Trainer\ScanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
@@ -38,6 +39,7 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::controller(TopupController::class)->group(function(){
         Route::get('/admin/topup_index','index')->name('admin.topup_index');
         Route::get('/admin/topup_show','topup_show')->name('admin.topup_show');
+        Route::get('/admin/topup_edit/{id}','topup_edit')->name('admin.topup_edit');
         Route::post('admin/topup_check','check')->name('admin.topup_check');
         Route::post('admin/topup_store','store')->name('admin.topup_store');
     });
@@ -75,6 +77,10 @@ Route::middleware(['auth','trainer'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/trainer/dashboard','index')->name('trainer.dashboard');
         Route::get('/trainer/qrscan','qrscan')->name('trainer.qrscan');
+    });
+
+    Route::controller(ScanController::class)->group(function(){
+        Route::post('/trainer/qrcheck','check')->name('trainer.qrcheck');
     });
 });
 

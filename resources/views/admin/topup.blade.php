@@ -115,6 +115,7 @@
     </div>
 
     <div class="col-8 p-2">
+        {{-- แสดงข้อมูลในตาราง --}}
         @if (session('card_record'))
 
             <div class="row">
@@ -124,7 +125,7 @@
                             ประวัติการใช้งาน
                         </div>
                         <div class="card-body">
-                            <table class="table">
+                            <table class="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>ลำดับ</th>
@@ -134,6 +135,7 @@
                                         <th>วันหมดอายุบัตร</th>
                                         <th>ประเภทการใช้งาน</th>
                                         <th>ผู้ใช้งาน</th>
+                                        <th>จัดการ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,6 +148,9 @@
                                             <td>{{ date('d-m-Y',strtotime($t->date_expiry)) }}</td>
                                             <td>{{ $t->method }}</td>
                                             <td>{{ $t->user }}</td>
+                                            <td>
+                                                <a href="{{ route('admin.topup_edit',$t->card) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                            </td>
                                        </tr>
                                    @endforeach
                                 </tbody>
@@ -156,7 +161,7 @@
             </div>
 
         @else
-
+        {{-- แสดงตารางเปล่า --}}
             <div class="row">
                 <div class="col">
                     <div class="card p-2">
@@ -184,13 +189,9 @@
 
         @endif
 
-
-
     </div>
 
 </div>
-
-
 
 @endsection
 

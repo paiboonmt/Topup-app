@@ -1,19 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Wellcome :
-            {{ Auth::user()->name }}
-        </h2>
-    </x-slot>
-
 
 
     <div class="container py-2">
-
-        <video id="video" autoplay></video>
+        {{-- <video id="video" autoplay></video>
         <canvas id="canvas"></canvas>
         <div id="output"></div>
-
         <script>
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
@@ -54,30 +45,49 @@
                 // สแกนใหม่ทุก 500 มิลลิวินาที
                 setTimeout(scanQRCode, 500);
             }
-        </script>
+        </script> --}}
+    </div>
 
 
+    <div class="container">
         <div class="row">
-            <div class="col">
-                <div class="card p-2">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
+            <div class="col mx-auto">
+                <div class="card p-3">
+                    <div class="card-header">
+                        FORM
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('trainer.qrcheck') }}" method="post">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label">Qrcode</label>
+                                <input type="number" name="code" value="{{ session('code') }}" class="form-control" autofocus required>
+                            </div>
+                            <button type="submit" hidden class="btn btn-success col-12">Enter</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row py-3">
+            <div class="col mx-auto text-center">
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <span class="text-danger">{{ session('old_card') }}</span>
+                        <span class="text-danger">{{ session('error') }}</span>
+                    </div>
+                @endif
 
+                @if (session('date_expiry'))
+                    <div class="alert alert-danger" role="alert">
+                        <span class="text-danger">หมายเลข : {{ session('card') }}</span>
+                        <span class="text-danger">วันที่ : {{ date('d-m-Y', strtotime(session('expiry'))) }}</span>
+                        <span class="text-danger">{{ session('date_expiry') }}</span>
+                    </div>
+                @endif
+
+            </div>
+        </div>
     </div>
-
 
 </x-app-layout>

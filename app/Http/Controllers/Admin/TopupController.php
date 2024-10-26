@@ -191,9 +191,9 @@ class TopupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function topup_edit(string $card)
     {
-        //
+        dd($card , session('card_record'));
     }
 
     /**
