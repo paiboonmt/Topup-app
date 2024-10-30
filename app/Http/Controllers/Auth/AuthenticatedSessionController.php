@@ -36,6 +36,10 @@ class AuthenticatedSessionController extends Controller
             return to_route('trainer.dashboard');
         }
 
+        if (Auth::user()->role == 'md') {
+            return to_route('md.dashboard');
+        }
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\Admin;
+use App\Http\Middleware\Md;
 use App\Http\Middleware\Trainer;
 use App\Http\Middleware\User;
 use Illuminate\Foundation\Application;
@@ -16,9 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
         $middleware->alias([
-            'admin' => Admin::class,
-            'user' => User::class,
+            'admin'   => Admin::class,
             'trainer' => Trainer::class,
+            'md'      => Md::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

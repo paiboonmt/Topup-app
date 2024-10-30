@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
+use App\Http\Controllers\Md\MdController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Trainer\HomeController;
 use App\Http\Controllers\Trainer\ScanController;
@@ -72,7 +73,7 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::get('/admin/report',[TrainerController::class,'index'])->name('admin.report_index');
 });
 
-
+// Trainer route
 Route::middleware(['auth','trainer'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/trainer/dashboard','index')->name('trainer.dashboard');
@@ -81,6 +82,17 @@ Route::middleware(['auth','trainer'])->group(function(){
 
     Route::controller(ScanController::class)->group(function(){
         Route::post('/trainer/qrcheck','check')->name('trainer.qrcheck');
+    });
+});
+
+// Md route
+Route::middleware(['auth','md'])->group(function(){
+    Route::controller(MdController::class)->group(function(){
+        Route::get('/md/dashboard','index')->name('md.dashboard');
+        Route::get('/md/report_daily','report_daily')->name('md.report_daily');
+        Route::get('/md/report_ticket','report_ticket')->name('md.report_ticket');
+        Route::get('/md/report_summary','report_summary')->name('md.report_summary');
+        Route::get('/md/report_checkin','report_checkin')->name('md.report_checkin');
     });
 });
 
