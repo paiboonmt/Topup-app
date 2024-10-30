@@ -5,11 +5,10 @@
 @section('content')
 
     <div class="row p-1">
-
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{ number_format($ticket[0]->total_sum ,2 ) }}</h3>
                     <p>รายรับวันนี้</p>
                 </div>
                 <div class="icon">
@@ -18,12 +17,11 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
-                    <p>รายได้เฉลี่ย</p>
+                    <h3>{{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
+                    <p>เมื่อวาน | {{ number_format($yesterdayRevenue,2) }}</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -31,11 +29,10 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
+            <div class="small-box bg-secondary">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>{{ $total->quantity }}</h3>
                     <p>จำนวนลูกค้าที่ใช้บริการวันนี้</p>
                 </div>
                 <div class="icon">
@@ -44,11 +41,10 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>65</h3>
+                    <h3>{{ $product }}</h3>
                     <p>จำนวนการขาย packages</p>
                 </div>
                 <div class="icon">
@@ -57,14 +53,13 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
     </div>
 
     <div class="row p-1">
         <div class="col-lg-4 col-12">
-            <div class="card">
+            <div class="card p-1">
                 <div class="card-header bg-info">รายการขายประจำวัน</div>
-                <table class="table">
+                <table class="table table-sm table-hover">
                     <thead>
                         <tr>
                             <th>วันที่</th>
