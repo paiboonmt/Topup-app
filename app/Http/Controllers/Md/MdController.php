@@ -41,7 +41,9 @@ class MdController extends Controller
 
         $total = DB::table('totel')
             ->select('quantity')
+            ->whereDate('date' , Carbon::today())
             ->orderByDesc('id')->first();
+        // dd($total);
 
         $product = DB::table('orders')
             ->whereDate('date' , Carbon::today())
