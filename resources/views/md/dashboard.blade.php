@@ -20,7 +20,14 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-                    <h3>{{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
+
+                    @if ( $percentageChange >0 ) 
+                        <h3> <i class="fas fa-plus fa-xs" style="color: greenyellow"></i>  {{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
+                    @else
+                        <h3> <i class="fas fa-minus fa-xs" style="color: red"></i>  {{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
+                    @endif
+
+                    
                     <p>เมื่อวาน | {{ number_format($yesterdayRevenue,2) }}</p>
                 </div>
                 <div class="icon">
@@ -57,7 +64,7 @@
 
     <div class="row p-1">
         <div class="col-lg-4 col-12">
-            <div class="card p-1">
+            <div class="card">
                 <div class="card-header bg-info">รายการขายประจำวัน</div>
                 <table class="table table-sm table-hover">
                     <thead>

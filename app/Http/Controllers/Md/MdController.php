@@ -31,48 +31,45 @@ class MdController extends Controller
             ->select(DB::raw('SUM(total) as total_sum'))
             ->where('date', 'like', '%' . $date .'%')
             ->get();
-        $yesterdayRevenue = DB::table('orders')
-            ->whereDate('date', Carbon::yesterday())
-            ->sum('total');
-        $todayRevenue = DB::table('orders')
-            ->whereDate('date', Carbon::today())
-            ->sum('total');
-        $percentageChange = $this->calculateRevenueChange($yesterdayRevenue, $todayRevenue);
 
-        // $total = DB::table('totel')
-        //     ->select('quantity')
-        //     ->whereDate('date' , Carbon::today())
-        //     ->orderByDesc('id')->first();
-      
+        $yesterdayRevenue = Http::get('http://172.16.0.132:8000/api/orders');
+        if ( $yesterdayRevenue->successful() ) {
+            $yesterdayRevenue = json_decode($yesterdayRevenue->body(),true);
+            $yesterdayRevenue = $yesterdayRevenue['yesterdayRevenue'];
+        }
 
-        $product = DB::table('orders')
-            ->whereDate('date' , Carbon::today())
-            ->count();
+        $todayRevenue = Http::get('http://172.16.0.132:8000/api/orders');
+        if ( $todayRevenue->successful() ) {
+            $todayRevenue = json_decode($todayRevenue->body(),true);
+            $todayRevenue = $todayRevenue['todayRevenue'];
+        }
 
-        // API
+        $percentageChange = $this->calculateRevenueChange($yesterdayRevenue , $todayRevenue );
+
+        $product = DB::table('orders')->whereDate('date' , Carbon::today())->count();
 
         $orderS  = Http::get('http://172.16.0.132:8000/api/orders');
-        if ($orderS ->successful()) 
-        {
-            // $data = $response->json();
-            // แปลง JSON เป็น array
-            $data = json_decode($orderS->body(), true);
-            // นับจำนวน row
-            $rowCount = count($data); // หรือ sizeof($data)
-            if (is_array($data)) {
-                $totalSale = array_sum(array_column($data,'total'));
+            if ($orderS -> successful()) 
+            {
+                // $data = $response->json();
+                // แปลง JSON เป็น array
+                $respone = json_decode($orderS->body(), true);
+                $data = $respone['orders'];
+                $rowCount = count($data);
+                if (is_array($data)) {
+                    $totalSale = array_sum(array_column($data,'total'));
+                }
             }
-        }
 
         $totalData = Http::get('http://172.16.0.132:8000/api/totals');
-        if ($totalData->successful())
-        {
-            // แปลง JSON เป็น array
-            $countTotal  = json_decode($totalData->body(),true);
-            // นับจำนวน row
-            // $countTotal = count($total);
-            // dd($countTotal);
-        }
+            if ($totalData->successful())
+            {
+                // แปลง JSON เป็น array
+                $countTotal  = json_decode($totalData->body(),true);
+                // นับจำนวน row
+                // $countTotal = count($total);
+                // dd($countTotal);
+            }
 
         return view('md.dashboard',
             [
