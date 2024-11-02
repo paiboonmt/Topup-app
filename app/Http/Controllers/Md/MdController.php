@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Js;
 
 class MdController extends Controller
 {
@@ -39,15 +41,40 @@ class MdController extends Controller
             ->sum('total');
         $percentageChange = $this->calculateRevenueChange($yesterdayRevenue, $todayRevenue);
 
-        $total = DB::table('totel')
-            ->select('quantity')
-            ->whereDate('date' , Carbon::today())
-            ->orderByDesc('id')->first();
-        // dd($total);
+        // $total = DB::table('totel')
+        //     ->select('quantity')
+        //     ->whereDate('date' , Carbon::today())
+        //     ->orderByDesc('id')->first();
+      
 
         $product = DB::table('orders')
             ->whereDate('date' , Carbon::today())
             ->count();
+
+        // API
+
+        $orderS  = Http::get('http://172.16.0.132:8000/api/orders');
+        if ($orderS ->successful()) 
+        {
+            // $data = $response->json();
+            // แปลง JSON เป็น array
+            $data = json_decode($orderS->body(), true);
+            // นับจำนวน row
+            $rowCount = count($data); // หรือ sizeof($data)
+            if (is_array($data)) {
+                $totalSale = array_sum(array_column($data,'total'));
+            }
+        }
+
+        $totalData = Http::get('http://172.16.0.132:8000/api/totals');
+        if ($totalData->successful())
+        {
+            // แปลง JSON เป็น array
+            $countTotal  = json_decode($totalData->body(),true);
+            // นับจำนวน row
+            // $countTotal = count($total);
+            // dd($countTotal);
+        }
 
         return view('md.dashboard',
             [
@@ -55,8 +82,11 @@ class MdController extends Controller
                 'yesterdayRevenue'  => $yesterdayRevenue,
                 'todayRevenue'      => $todayRevenue,
                 'percentageChange'  => $percentageChange,
-                'total'             => $total,
+                // 'total'             => $total,
                 'product'           => $product,
+                'totalSale'         => $totalSale,
+                'countTotal'        => $countTotal,
+                // 'orders'            => $data,
             ]
         );
     }

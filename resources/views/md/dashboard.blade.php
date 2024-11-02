@@ -8,7 +8,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>{{ number_format($ticket[0]->total_sum ,2 ) }}</h3>
+                    <h3>{{ number_format($totalSale ,2 ) }}</h3>
                     <p>รายรับวันนี้</p>
                 </div>
                 <div class="icon">
@@ -32,7 +32,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-secondary">
                 <div class="inner">
-                    <h3>{{ $total->quantity }}</h3>
+                    <h3 id="dataDisplay">{{ $countTotal[0]['quantity'] }}</h3>
                     <p>จำนวนลูกค้าที่ใช้บริการวันนี้</p>
                 </div>
                 <div class="icon">
@@ -143,5 +143,16 @@
             </div>
         </div>
     </div>
+
+    <div class="row p-1">
+
+    </div>
+
+    <script>
+        // รีเฟรชหน้าเว็บทุก 120000ms (2 นาที)
+        setInterval(function(){
+            window.location.reload(); // ใช้ window.location.reload() เพื่อรีเฟรชหน้า
+        }, 120000);
+    </script>
 
 @endsection
