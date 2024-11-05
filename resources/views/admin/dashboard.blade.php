@@ -10,7 +10,7 @@
 
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{ $countCustomer }}</h3>
                     <p>Customer Active</p>
                 </div>
                 <div class="icon">
