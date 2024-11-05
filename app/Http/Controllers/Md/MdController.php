@@ -71,6 +71,8 @@ class MdController extends Controller
                 // dd($countTotal);
             }
 
+        $countCustomer = DB::table('member');
+
         return view('md.dashboard',
             [
                 'ticket'            => $ticket,

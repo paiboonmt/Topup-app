@@ -5,6 +5,7 @@
 @section('content')
 
     <div class="row p-1">
+        {{-- แสดงรายรับ --}}
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
@@ -17,17 +18,11 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+        {{-- แสดงเปอร์เซน --}}
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
-
-                    @if ( $percentageChange >0 ) 
-                        <h3> <i class="fas fa-plus fa-xs" style="color: greenyellow"></i>  {{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
-                    @else
-                        <h3> <i class="fas fa-minus fa-xs" style="color: red"></i>  {{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
-                    @endif
-
-                    
+                    <h3>{{ number_format($percentageChange,0) }}<sup style="font-size: 20px">%</sup></h3>
                     <p>เมื่อวาน | {{ number_format($yesterdayRevenue,2) }}</p>
                 </div>
                 <div class="icon">
@@ -36,6 +31,7 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+        {{-- แสดงจำนวนลูกค้า --}}
         <div class="col-lg-3 col-6">
             <div class="small-box bg-secondary">
                 <div class="inner">
@@ -48,11 +44,12 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>{{ $product }}</h3>
-                    <p>จำนวนการขาย packages</p>
+                    <p>จำนวนลูกค้า</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
@@ -60,6 +57,7 @@
                 <a href="#" class="small-box-footer">รายงาน <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
     </div>
 
     <div class="row p-1">
@@ -159,7 +157,7 @@
         // รีเฟรชหน้าเว็บทุก 120000ms (2 นาที)
         setInterval(function(){
             window.location.reload(); // ใช้ window.location.reload() เพื่อรีเฟรชหน้า
-        }, 120000);
+        }, 60000);
     </script>
 
 @endsection
