@@ -33,24 +33,23 @@ class MdController extends Controller
             ->get();
 
         $yesterdayRevenue = Http::get('http://172.16.0.132:8000/api/orders');
-        if ( $yesterdayRevenue->successful() ) {
-            $yesterdayRevenue = json_decode($yesterdayRevenue->body(),true);
-            $yesterdayRevenue = $yesterdayRevenue['yesterdayRevenue'];
-        }
+            if ( $yesterdayRevenue->successful() ) {
+                $yesterdayRevenue = json_decode($yesterdayRevenue->body(),true);
+                $yesterdayRevenue = $yesterdayRevenue['yesterdayRevenue'];
+            }
 
         $todayRevenue = Http::get('http://172.16.0.132:8000/api/orders');
-        if ( $todayRevenue->successful() ) {
-            $todayRevenue = json_decode($todayRevenue->body(),true);
-            $todayRevenue = $todayRevenue['todayRevenue'];
-        }
+            if ( $todayRevenue->successful() ) {
+                $todayRevenue = json_decode($todayRevenue->body(),true);
+                $todayRevenue = $todayRevenue['todayRevenue'];
+            }
 
         $percentageChange = $this->calculateRevenueChange($yesterdayRevenue , $todayRevenue );
 
         $product = DB::table('orders')->whereDate('date' , Carbon::today())->count();
 
         $orderS  = Http::get('http://172.16.0.132:8000/api/orders');
-            if ($orderS -> successful()) 
-            {
+            if ($orderS -> successful()) {
                 // $data = $response->json();
                 // แปลง JSON เป็น array
                 $respone = json_decode($orderS->body(), true);
@@ -62,16 +61,44 @@ class MdController extends Controller
             }
 
         $totalData = Http::get('http://172.16.0.132:8000/api/totals');
-            if ($totalData->successful())
-            {
-                // แปลง JSON เป็น array
+            if ($totalData->successful()) {
                 $countTotal  = json_decode($totalData->body(),true);
-                // นับจำนวน row
-                // $countTotal = count($total);
-                // dd($countTotal);
             }
 
-        $countCustomer = DB::table('member');
+        $DatacountCustomer = Http::get('http://172.16.0.132:8000/api/countCustomer');
+            if ($DatacountCustomer->successful()) {
+                $DatacountCustomer  = json_decode($DatacountCustomer->body(),true);
+            }
+
+        // Table
+        $sumOrders = Http::get('http://172.16.0.132:8000/api/sumOrders');
+            if($sumOrders->successful()){
+                $sumOrders = json_decode($sumOrders->body(),true);
+            }
+        $countProducts = Http::get('http://172.16.0.132:8000/api/countProducts');
+            if($countProducts->successful()){
+                $countProducts = json_decode($countProducts->body(),true);
+            }
+        $countPayment = Http::get('http://172.16.0.132:8000/api/countPayment');
+            if($countPayment->successful()){
+                $countPayment = json_decode($countPayment->body(),true);
+            }
+
+        $rr = DB::connection('mysql2')->table('orders')
+            ->select(DB::raw('DATE(`date`) as date'), DB::raw('SUM(total) as sum'))
+            ->groupBy(DB::raw('DATE(`date`)'))
+            ->orderBy('date', 'desc')
+            ->limit(5)  // Add the desired limit here
+            ->get();
+        $tt = DB::connection('mysql2')->table('orders')
+            ->join('order_details', 'order_details.order_id', '=', 'orders.id')
+            ->select('order_details.product_name', DB::raw('COUNT(order_details.product_name) as ccount'), DB::raw('SUM(orders.total) as sum'))
+            ->whereDate('orders.date', 'like', "%$date%")
+            ->groupBy('order_details.product_name')
+            ->orderBy('ccount', 'desc')
+            ->limit(5)
+            ->get();
+
 
         return view('md.dashboard',
             [
@@ -79,11 +106,15 @@ class MdController extends Controller
                 'yesterdayRevenue'  => $yesterdayRevenue,
                 'todayRevenue'      => $todayRevenue,
                 'percentageChange'  => $percentageChange,
-                // 'total'             => $total,
                 'product'           => $product,
                 'totalSale'         => $totalSale,
                 'countTotal'        => $countTotal,
-                // 'orders'            => $data,
+                'DatacountCustomer' => $DatacountCustomer,
+                'sumOrders'         => $sumOrders,
+                'countProducts'     => $countProducts,
+                'countPayment'      => $countPayment,
+                'rr'                => $rr,
+                'tt'                => $tt,
             ]
         );
     }

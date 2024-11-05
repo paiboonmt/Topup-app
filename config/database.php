@@ -62,6 +62,21 @@ return [
             ]) : [],
         ],
 
+        'mysql2' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_SECOND', '27.254.145.135'),
+            'port' => env('DB_PORT_SECOND', '3306'),
+            'database' => env('DB_DATABASE_SECOND', 'tigerbranch2'),
+            'username' => env('DB_USERNAME_SECOND', 'tiger_branch2'),
+            'password' => env('DB_PASSWORD_SECOND', 'admin!@#$9itonly'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),

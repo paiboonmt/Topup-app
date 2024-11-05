@@ -48,7 +48,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>{{ $product }}</h3>
+                    <h3>{{ $DatacountCustomer }}</h3>
                     <p>จำนวนลูกค้า</p>
                 </div>
                 <div class="icon">
@@ -60,11 +60,12 @@
 
     </div>
 
-    <div class="row p-1">
+    <div class="row">
+
         <div class="col-lg-4 col-12">
             <div class="card">
                 <div class="card-header bg-info">รายการขายประจำวัน</div>
-                <table class="table table-sm table-hover">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>วันที่</th>
@@ -72,26 +73,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>21/10/24</td>
-                            <td class="text-right">3,000,000.00</td>
-                        </tr>
-                        <tr>
-                            <td>20/10/24</td>
-                            <td class="text-right">2,000,000.00</td>
-                        </tr>
-                        <tr>
-                            <td>19/10/24</td>
-                            <td class="text-right">1,000,000.00</td>
-                        </tr>
+                        @foreach ( $sumOrders as $item )
+                            <tr>
+                                <td>{{ date('d-m-Y',strtotime($item['date'])) }}</td>
+                                <td class="text-right">{{ number_format($item['sum'],2) }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+
         <div class="col-lg-4 col-12">
             <div class="card">
                 <div class="card-header bg-dark">ประเภทการจ่าย</div>
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>ประเภท</th>
@@ -100,56 +96,91 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Cash</td>
-                            <td>100</td>
-                            <td class="text-right">50,000.00</td>
-                        </tr>
-                        <tr>
-                            <td>Paypal</td>
-                            <td>50</td>
-                            <td class="text-right">100,000.00</td>
-                        </tr>
-                        <tr>
-                            <td>Visa card</td>
-                            <td>20</td>
-                            <td class="text-right">35,000.00</td>
-                        </tr>
-
+                        @foreach ($countProducts as $item)
+                            <tr>
+                                <td>{{ $item['product_name'] }}</td>
+                                <td>{{ $item['ccount'] }}</td>
+                                <td class="text-right">{{ number_format($item['sum'],2) }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+
         <div class="col-lg-4 col-12">
             <div class="card">
                 <div class="card-header" style="background-color: rgb(241, 221, 41)">แพ็คเกจขายดี</div>
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>ชื่อแพ็คเกจ</th>
+                            <th>จำนวน</th>
                             <th class="text-right">จำนวนครั้ง / ขาย</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Drop in</td>
-                            <td class="text-right">11</td>
-                        </tr>
-                        <tr>
-                            <td>Private Muaythai</td>
-                            <td class="text-right">9</td>
-                        </tr>
-                        <tr>
-                            <td>Day Pass</td>
-                            <td class="text-right">5</td>
-                        </tr>
+                       @foreach ($countPayment as $item)
+                           <tr>
+                                <td>{{ $item['pay'] }}</td>
+                                <td>{{ $item['count'] }}</td>
+                                <td class="text-right">{{ number_format($item['sum'],2) }}</td>
+                           </tr>
+                       @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
+
     </div>
 
-    <div class="row p-1">
+    <div class="row">
+
+        <div class="col-lg-4 col-12">
+            <div class="card">
+                <div class="card-header" style="background-color: rgb(8, 36, 174); color:white">Ratachai gym</div>
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>วันที่</th>
+                            <th class="text-right">จำนวนรายได้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach ($rr as $item)
+                           <tr>
+                                <td>{{ $item->date }}</td>
+                                <td class="text-right">{{ number_format($item->sum,2) }}</td>
+                           </tr>
+                       @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-12">
+            <div class="card">
+                <div class="card-header" style="background-color: rgb(147, 71, 177); color:white">Ratachai gym</div>
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>รายการ</th>
+                            <th>จำนวน</th>
+                            <th class="text-right">จำนวนรายได้</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach ($tt as $item)
+                           <tr>
+                                <td>{{ $item->product_name }}</td>
+                                <td>{{ $item->ccount }}</td>
+                                <td class="text-right">{{ number_format($item->sum,2) }}</td>
+                           </tr>
+                       @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     </div>
 
