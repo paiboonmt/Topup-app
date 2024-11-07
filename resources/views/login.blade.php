@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Topup-app | Log in</title>
+  <title>TIGER MUAYTHAI WEB APPLICATION | Log in</title>
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -20,10 +20,10 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="#" class="h1"><b>TOPUP</b> MONNEY </a>
+      <a href="#" class="h1"><b>TIGER MUAY THAI </b></a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start program</p>
+      <p class="login-box-msg">WEB APPLICATION</p>
 
       <form action="{{ route('login') }}" method="post">
         @csrf

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CardController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\FighterController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\Md\MdController;
@@ -10,9 +12,9 @@ use App\Http\Controllers\Trainer\HomeController;
 use App\Http\Controllers\Trainer\ScanController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
 Route::get('/', function () {
     return view('login');
@@ -36,6 +38,19 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/dashboard','index')->name('admin.dashboard');
     });
 
+    // customer
+    Route::controller(CustomerController::class)->group(function(){
+        Route::get('/admin/customer','index')->name('admin.customers');
+        Route::get('/admin/customer_create','create')->name('admin.customer_create');
+        Route::get('/admin/customer_expired','expired')->name('admin.customer_expired');
+    });
+
+    // Fighter
+    Route::controller(FighterController::class)->group(function(){
+        Route::get('/admin/fighters','index')->name('admin.fighters');
+        Route::get('/admin/fighter_profile','show')->name('admin.fighter_profile');
+    });
+  
     // TopupController
     Route::controller(TopupController::class)->group(function(){
         Route::get('/admin/topup_index','index')->name('admin.topup_index');
