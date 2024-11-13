@@ -18,8 +18,7 @@ class TopupController extends Controller
      */
     public function index()
     {
-        // Session::forget('code');
-        // Session::forget('topopDetail');
+     
         return view('admin.topup');
     }
 
@@ -70,6 +69,7 @@ class TopupController extends Controller
 
                 } else {
 
+                    // ถ้าเจอข้อมูล ให้นำข้อมูลจากตาราง CardRecord ไปแสดง
                     $card_record = CardRecord::where('card',$card)->get();
                     session(['card_record' => $card_record]);
                     return redirect()->back()->with('status','หมายเลขเปิดใช้งานแล้ว');
@@ -101,9 +101,21 @@ class TopupController extends Controller
             ]
         );
 
-        dd($request->input());
+        // dd($request->input());
 
-        if ($request->discount == 0) {
+        // "_token" => "NAgG9FcHCKqasRjSTm3wpvxnGU8jOqMmqdiJ3MWS"
+        // "card" => "0009714364"
+        // "price" => "1000"
+        // "discount" => "0"
+        // "payment" => "cash"
+        // "date_expiry" => "2024-10-20"
+        // "comment" => "Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        // "method" => "topup"
+
+        // ถ้าไม่มีส่วนลด
+        if ($request->discount == 0) 
+        {
+
             $total =  $request->price;
 
             // เก็บประวัตการเติมเงิน
@@ -116,7 +128,7 @@ class TopupController extends Controller
                     'payment'       => $request->payment,
                     'date_expiry'   => $request->date_expiry,
                     'comment'       => $request->comment,
-                    'total'         => $total,
+                    'total'         => $request->price,
                     'status'        => 1,
                     'method'        => $request->method,
                 ]
@@ -131,14 +143,17 @@ class TopupController extends Controller
                     'payment'       => $request->payment,
                     'date_expiry'   => $request->date_expiry,
                     'comment'       => $request->comment,
-                    'total'         => $total,
+                    'total'         => $request->price,
                     'status'        => 1,
                     'method'        => $request->method,
                     'user'          => Auth::user()->name,
                 ]
             );
 
-        } else {
+        } 
+        // ถ้ามีส่วนลด
+        else 
+        {
 
             $discount = $request->discount;
             $price = $request->price;
@@ -184,8 +199,10 @@ class TopupController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        dd($id);
+    {   
+        Session::forget('card_record');
+        $data = DB::table('card_records')->get();
+        return view('admin.topup_show',compact('data'));
     }
 
     /**

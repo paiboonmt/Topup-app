@@ -90,7 +90,7 @@
 
                     <div class="form-group mb-1">
                         <label>หมายเหตุฯ</label>
-                        <textarea class="form-control" name="comment" rows="3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem repellendus earum cumque?</textarea>
+                        <textarea class="form-control" name="comment" rows="3">Lorem ipsum dolor sit amet consectetur adipisicing elit.</textarea>
                     </div>
 
                     <input type="text" name="method" value="topup">
@@ -149,7 +149,7 @@
                                             <td>{{ $t->method }}</td>
                                             <td>{{ $t->user }}</td>
                                             <td>
-                                                <a href="{{ route('admin.topup_edit',$t->card) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                <a href="{{ route('admin.topup_show',$t->card) }}" class="btn btn-sm btn-success"><i class="fas fa-edit"></i></a>
                                             </td>
                                        </tr>
                                    @endforeach
@@ -161,6 +161,7 @@
             </div>
 
         @else
+
         {{-- แสดงตารางเปล่า --}}
             <div class="row">
                 <div class="col">

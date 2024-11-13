@@ -1,6 +1,5 @@
 <x-app-layout>
 
-
     <div class="container py-2">
         {{-- <video id="video" autoplay></video>
         <canvas id="canvas"></canvas>
@@ -47,7 +46,6 @@
             }
         </script> --}}
     </div>
-
 
     <div class="container">
         <div class="row">
