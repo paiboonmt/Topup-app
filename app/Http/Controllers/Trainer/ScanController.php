@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Trainer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Card;
+use App\Models\CardRecord;
 use App\Models\Topup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -44,16 +45,49 @@ class ScanController extends Controller
           
             $data = Topup::where('card',$request->input('code'))->first();
 
-            dd($data);
+            // dd($data);
 
-            if ( $data->date_expiry <= date('Y-m-d') ) {
+            if ( $data->date_expiry < date('Y-m-d') ) {
 
-                session(['card' => $data->card , 'expiry' > $data->date_expiry]);
+                session(['card' => $data->card , 'expiry' => $data->date_expiry]);
                 return redirect()->back()->with('date_expiry','บัตรหมดอายุการใช้งาน กรุณาติดต่อฝ่ายบริการ');
 
             } else {
 
+                dd($data);
+
                 // ตรวจสอบจำนวนเงิน
+                if ( $data->total <= 0 ) {
+                    session(['card' => $data->card ]);
+                    return redirect()->back()->with('lowPrice','จำนวนเงินเหลือน้อย');
+                } else {
+
+                    // ส่งไปหน้า ฟอร์มข้อมูล
+                    // "id" => 1
+                    // "card" => "0009714364"
+                    // "price" => "1000.00"
+                    // "discount" => 0
+                    // "payment" => "cash"
+                    // "date_expiry" => "2024-11-20"
+                    // "comment" => "Lorem ipsum dolor sit amet consectetur adipisicing elit."
+                    // "total" => "1000.00"
+                    // "status" => 1
+                    // "method" => "topup"
+                    // "created_at" => "2024-11-13 10:31:16"
+                    // "updated_at" => "2024-11-13 10:31:16"
+                    // $setData = CardRecord::create(
+                    //     [
+                    //         'card' => $data->card,
+                    //         'price' => $data->price,
+                    //         'discount' => $data->discount,
+                    //         'payment' => 'Trainer',
+                    //         'date_expiry' => $data->date_expiry,
+                    //         'comment' => "Trainer add code",
+                    //     ]
+                    // );
+
+
+                }
 
             }
 

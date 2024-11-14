@@ -79,7 +79,7 @@
                 @if (session('date_expiry'))
                     <div class="alert alert-danger" role="alert">
                         <span class="text-danger">หมายเลข : {{ session('card') }}</span>
-                        <span class="text-danger">วันที่ : {{ date('d-m-Y', strtotime(session('expiry'))) }}</span>
+                        <span class="text-danger">วันที่ : {{ \Carbon\Carbon::parse(session('expiry'))->format('d-m-Y') }} </span>
                         <span class="text-danger">{{ session('date_expiry') }}</span>
                     </div>
                 @endif
