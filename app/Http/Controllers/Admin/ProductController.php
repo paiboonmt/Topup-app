@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Controllers\admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    public function index()
+    {
+        return view('admin.product_index');
+    }
+
+    public function store( Request $request)
+    {
+        $request->validate(
+            [
+                'name'   => 'required|max:100',
+                'price'  => 'required'
+            ]
+        );
+
+
+        dd($request->input());
+    }
+}

@@ -72,7 +72,7 @@
                 {{-- https://cdn-icons-png.flaticon.com/512/5543/5543070.png --}}
                 <img src="https://cdn-icons-png.flaticon.com/512/5543/5543070.png"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">โปรแกรมเติมเงิน</span>
+                <span class="brand-text font-weight-light">WEB APPLICATION</span>
             </a>
             <!-- Sidebar -->
             <div class="sidebar">
@@ -82,18 +82,32 @@
                         data-accordion="false">
 
                         {{-- Dashboard --}}
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}"
                                 class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
+                                <p>แดซบอร์ด</p>
                             </a>
-                        </li> --}}
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.cart_index') }}"
+                                class="nav-link {{ request()->routeIs('admin.cart_index') ? 'active' : '' }}">
+                                <i class="fas fa-shopping-cart nav-icon"></i>
+                                <p>ขายสินค้า</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.product_index') }}"
+                                class="nav-link {{ request()->routeIs('admin.product_index') ? 'active' : '' }}">
+                                <i class="fab fa-product-hunt nav-icon"></i>
+                                <p>สินค้า</p>
+                            </a>
+                        </li>
 
                         {{-- Topup --}}
-                        <li
+                        {{-- <li
                             class="nav-item  {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'menu-open' : '' }}">
                             <a href="#"
                                 class="nav-link {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'active' : '' }}">
@@ -124,10 +138,10 @@
 
                             </ul>
 
-                        </li>
+                        </li> --}}
 
                         {{-- Card --}}
-                        <li
+                        {{-- <li
                             class="nav-item {{ request()->routeIs(['admin.card_index', 'admin.card_show']) ? 'menu-open' : '' }}">
                             <a href="#"
                                 class="nav-link {{ request()->routeIs(['admin.card_index', 'admin.card_show']) ? 'active' : '' }}">
@@ -155,10 +169,10 @@
                                 </li>
                             </ul>
 
-                        </li>
+                        </li> --}}
 
                         {{-- Customer --}}
-                        <li
+                        {{-- <li
                             class="nav-item {{ request()->routeIs(['admin.customers', 'admin.customer_create','admin.customer_expired']) ? 'menu-open' : '' }}">
                             <a href="{{ route('admin.customers') }}"
                                 class="nav-link {{ request()->routeIs(['admin.customers', 'admin.customer_create','admin.customer_expired']) ? 'active' : '' }}">
@@ -197,34 +211,34 @@
 
                             </ul>
 
-                        </li>
+                        </li> --}}
 
                         {{-- Fighter --}}
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.fighters') }}"
                                 class="nav-link {{ request()->routeIs(['admin.fighters','admin.fighter_profile']) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-ninja"></i>
                                 <p>fighters</p>
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- Trainer --}}
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.trainer_index') }}"
                                 class="nav-link {{ request()->routeIs(['admin.trainer_index', 'admin.trainer_create', 'admin.trainer_show']) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-user-ninja"></i>
                                 <p>Trainer</p>
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- report --}}
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('admin.report_index') }}"
                                 class="nav-link {{ request()->routeIs('admin.report_index') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-file-signature"></i>
                                 <p>Report</p>
                             </a>
-                        </li>
+                        </li> --}}
 
                     </ul>
                 </nav>

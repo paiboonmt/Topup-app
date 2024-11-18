@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CardController;
+use App\Http\Controllers\admin\CartController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\FighterController;
+use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\Md\MdController;
@@ -33,19 +35,30 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::middleware(['auth','admin'])->group(function(){
 
+    // ProductController
+    Route::controller(ProductController::class)->group(function(){
+        Route::get('/admin/product','index')->name('admin.product_index');
+        Route::post('/admin/product','store')->name('admin.product_create');
+    });
+
+    //CartController
+    Route::controller(CartController::class)->group(function(){
+        Route::get('/admin/cart_index','index')->name('admin.cart_index');
+    });
+
     // AdminController
     Route::controller(AdminController::class)->group(function(){
         Route::get('/admin/dashboard','index')->name('admin.dashboard');
     });
 
-    // customer
+    // CustomerController
     Route::controller(CustomerController::class)->group(function(){
         Route::get('/admin/customer','index')->name('admin.customers');
         Route::get('/admin/customer_create','create')->name('admin.customer_create');
         Route::get('/admin/customer_expired','expired')->name('admin.customer_expired');
     });
 
-    // Fighter
+    // FighterController
     Route::controller(FighterController::class)->group(function(){
         Route::get('/admin/fighters','index')->name('admin.fighters');
         Route::get('/admin/fighter_profile','show')->name('admin.fighter_profile');
@@ -83,9 +96,6 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::delete('/admin/card_destroy/{id}','destroy')->name('admin.card_destroy');
     });
 
-    Route::controller(CardController::class)->group(function () {
-
-    });
 
     //Report
     Route::get('/admin/report',[TrainerController::class,'index'])->name('admin.report_index');
