@@ -48,7 +48,10 @@
     </div>
 
     <div class="container">
-        <div class="row">
+        @if (session('data'))
+            {{-- เป็นที่ว่าง --}}
+        @else
+            <div class="row">
             <div class="col mx-auto">
                 <div class="card p-3">
                     <div class="card-header">
@@ -64,9 +67,13 @@
                             <button type="submit" hidden class="btn btn-success col-12">Enter</button>
                         </form>
                     </div>
+                    <a href="{{ route('trainer.remove_session') }}" class="btn btn-danger">remove session</a>
                 </div>
             </div>
-        </div>
+
+        </div>    
+        @endif
+
         <div class="row py-3">
             <div class="col mx-auto text-center">
                 @if (session('error'))
@@ -86,6 +93,34 @@
 
             </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                @if (session('data'))
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">หมายเลขบัตร</span>
+                        <input type="text" class="form-control" value="{{ session('data.card') }}">
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">จำนวนเงินคงเหลือ</span>
+                        <input type="text" class="form-control" value="{{ number_format(session('data.total'),2) }}">
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">วันหมดอายุของบัตร</span>
+                        <input type="text" class="form-control" value="{{ session('data.date_expiry') }}">
+                    </div>
+                    <div class="input-group">
+                        <textarea class="form-control">{{ session('data.comment') }}</textarea>
+                    </div>
+                    <hr>
+                    <div class="card">
+                        <a href="" class="btn btn-success mb-2">ทำรายการต่อ</a>
+                        <a href="{{ route('trainer.remove_session') }}" class="btn btn-danger">ยกเลิกการทำรายการ</a>
+                    </div>
+                @endif
+            </div>
+        </div>
+
     </div>
 
 </x-app-layout>
