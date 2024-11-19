@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('admin.product_index');
+        $data = Product::all();
+        return view('admin.product_index',[
+            'products' => $data
+        ]);
     }
 
     public function store( Request $request)
@@ -17,11 +22,21 @@ class ProductController extends Controller
         $request->validate(
             [
                 'name'   => 'required|max:100',
-                'price'  => 'required'
+                'price'  => 'required',
+            ]
+        );
+
+        $product = Product::create(
+            [
+                'name'      => $request->name,
+                'price'     => $request->price,
+                'quantity'  => 1 ,
+                'user'      => Auth::user()->name
             ]
         );
 
 
-        dd($request->input());
+        return redirect()->back()->with('create','เพื่มสินค้าเรียบร้อยแล้ว.');
+
     }
 }

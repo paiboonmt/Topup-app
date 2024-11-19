@@ -13,12 +13,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $countCustomer = DB::table('member')->count();
-        return view('admin.dashboard',
-            [
-                'countCustomer' => $countCustomer,
-            ]
-        );
+        return view('admin.dashboard');
     }
 
     /**

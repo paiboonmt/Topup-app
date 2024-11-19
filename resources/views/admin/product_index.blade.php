@@ -49,34 +49,33 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table">
+                    <table class="table" id="example1">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">ลำดับที่</th>
+                                <th scope="col">ชื่อสินค้า</th>
+                                <th scope="col">ราคา</th>
+                                <th scope="col">จำนวน</th>
+                                <th scope="col">ผู้สร้าง</th>
+                                <th scope="col">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
+                            @php
+                                $t = 1;
+                            @endphp 
+                          @foreach ($products as $i)
+                              <tr>
+                                <td>{{ $t++ }}</td>
+                                <td>{{ $i->name }}</td>
+                                <td>{{ $i->price }}</td>
+                                <td>{{ $i->quantity }}</td>
+                                <td>{{ $i->user }}</td>
+                                <td>
+                                    <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                              </tr>
+                          @endforeach
                         </tbody>
                     </table>
                 </div>

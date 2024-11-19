@@ -294,6 +294,18 @@
         });
     </script>
 
+    {{-- product --}}
+    @if (session('create'))
+        <script>
+            Swal.fire({
+                title: "Good job!",
+                text: '{{ session('create') }}',
+                icon: "success",
+                timer: 2000, // optional auto-close timer
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 
 
 </body>
