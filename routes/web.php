@@ -111,6 +111,9 @@ Route::middleware(['auth','trainer'])->group(function() {
 
     Route::controller(ScanController::class)->group(function(){
         Route::post('/trainer/qrcheck','check')->name('trainer.qrcheck');
+
+        // remove session
+        Route::get('trainer/remove_session','removeSession')->name('trainer.remove_session');
     });
 
 });

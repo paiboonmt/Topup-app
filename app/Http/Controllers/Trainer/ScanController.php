@@ -50,17 +50,20 @@ class ScanController extends Controller
             if ( $data->date_expiry < date('Y-m-d') ) {
 
                 session(['card' => $data->card , 'expiry' => $data->date_expiry]);
+                session(['data' => $data ]);
                 return redirect()->back()->with('date_expiry','บัตรหมดอายุการใช้งาน กรุณาติดต่อฝ่ายบริการ');
 
             } else {
 
-                dd($data);
-
                 // ตรวจสอบจำนวนเงิน
                 if ( $data->total <= 0 ) {
+
                     session(['card' => $data->card ]);
                     return redirect()->back()->with('lowPrice','จำนวนเงินเหลือน้อย');
+
                 } else {
+                    session(['data' => $data ]);
+                    return redirect()->back();
 
                     // ส่งไปหน้า ฟอร์มข้อมูล
                     // "id" => 1
@@ -96,6 +99,13 @@ class ScanController extends Controller
         }
 
 
+    }
+
+    public function removeSession()
+    {
+        // dd(Session::all());
+        Session::forget(['old_card','card','expiry','data']);
+        return redirect()->back();
     }
 
     /**
