@@ -72,9 +72,57 @@
                                 <td>{{ $i->quantity }}</td>
                                 <td>{{ $i->user }}</td>
                                 <td>
-                                    <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                    <form id="delete-form-{{ $i->id }}" method="POST" action="{{ route('admin.product_delete',$i->id) }}">
+                                        {{-- {{ route('deleteItem', $i->id) }} --}}
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit{{ $i->id }}">
+                                            <i class="fas fa-edit">
+                                        </i></button>
+                                        <input type="hidden" name="id" value="{{ $i->id }}">
+                                        <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $i->id }})">
+                                            <i class="fas fa-trash-restore"></i>
+                                        </button>
+                                    </form>
                                 </td>
                               </tr>
+
+                              <div class="modal fade" id="edit{{ $i->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" method="post">
+                                                @csrf
+                                                <input type="hidden" value="{{ $i->id }}">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">ชื่อสินค้า</span>
+                                                    </div>
+                                                    <input type="text" class="form-control" name="name" value="{{ $i->name }}">
+                                                </div>
+
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">ราคา</span>
+                                                    </div>
+                                                    <input type="number" class="form-control" name="price" value="{{ $i->price }}">
+                                                </div>
+                                            <input type="submit" class="form-control" value="">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ออก</button>
+                                            <button type="submit" class="btn btn-primary">อัปเดท</button>
+                                        </div>
+                                    </form> 
+                                    </div>
+                                </div>
+                            </div>
+
                           @endforeach
                         </tbody>
                     </table>
@@ -83,3 +131,21 @@
         </div>
     </div>
 @endsection
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        })
+    }
+</script>

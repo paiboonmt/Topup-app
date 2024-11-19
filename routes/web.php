@@ -42,6 +42,7 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::controller(ProductController::class)->group(function(){
         Route::get('/admin/product','index')->name('admin.product_index');
         Route::post('/admin/product','store')->name('admin.product_create');
+        Route::delete('admin/product/{id}','delete')->name('admin.product_delete');
     });
 
     //CartController
