@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" id="example1">
+                    <table class="table table-sm" id="example1">
                         <thead>
                             <tr>
                                 <th scope="col">ลำดับที่</th>
@@ -90,15 +90,17 @@
                               <div class="modal fade" id="edit{{ $i->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
+
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
+
                                         <div class="modal-body">
-                                            <form action="" method="post">
+                                            <form action="{{ route('admin.product_update') }}" method="post">
                                                 @csrf
-                                                <input type="hidden" value="{{ $i->id }}">
+                                                <input type="hidden" name="id" value="{{ $i->id }}">
                                                 <div class="input-group mb-2">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">ชื่อสินค้า</span>
@@ -112,12 +114,14 @@
                                                     </div>
                                                     <input type="number" class="form-control" name="price" value="{{ $i->price }}">
                                                 </div>
-                                            <input type="submit" class="form-control" value="">
+                                            
                                         </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">ออก</button>
                                             <button type="submit" class="btn btn-primary">อัปเดท</button>
                                         </div>
+
                                     </form> 
                                     </div>
                                 </div>

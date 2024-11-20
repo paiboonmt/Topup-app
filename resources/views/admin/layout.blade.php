@@ -295,11 +295,23 @@
     </script>
 
     {{-- product --}}
-    @if (session('create'))
+    @if (session('product_create'))
         <script>
             Swal.fire({
                 title: "Good job!",
-                text: '{{ session('create') }}',
+                text: '{{ session('product_create') }}',
+                icon: "success",
+                timer: 2000, // optional auto-close timer
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+
+    @if (session('product_update'))
+        <script>
+            Swal.fire({
+                title: "Good job!",
+                text: '{{ session('product_update') }}',
                 icon: "success",
                 timer: 2000, // optional auto-close timer
                 showConfirmButton: false
@@ -309,5 +321,4 @@
 
 
 </body>
-
 </html>

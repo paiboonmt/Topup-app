@@ -42,12 +42,17 @@ Route::middleware(['auth','admin'])->group(function(){
     Route::controller(ProductController::class)->group(function(){
         Route::get('/admin/product','index')->name('admin.product_index');
         Route::post('/admin/product','store')->name('admin.product_create');
+        Route::post('/admin/product_update','update')->name('admin.product_update');
         Route::delete('admin/product/{id}','delete')->name('admin.product_delete');
     });
 
     //CartController
     Route::controller(CartController::class)->group(function(){
         Route::get('/admin/cart_index','index')->name('admin.cart_index');
+        Route::post('/admin/addItem','addItem')->name('admin.addItem');
+        Route::post('/admin/removeItem','removeItem')->name('admin.removeItem');
+
+        Route::get('/admin/cancelCart','cancelCart')->name('admin.cancelCart');
     });
 
     // AdminController

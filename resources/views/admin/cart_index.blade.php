@@ -1,8 +1,182 @@
 @extends('admin.layout')
-@section('title','Cart page')
+@section('title', 'Cart page')
 
 @section('content')
 
-    <h1>Cart</h1>
+    <div class="row p-1">
+
+        <div class="col-5">
+            <div class="card p-2">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">ชื่อสินค้า</th>
+                            <th scope="col">ราคาสินค้า</th>
+                            <th scope="col">เพื่มสินค้า</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($products as $i)
+                            <tr>
+                                <td>{{ $i->name }}</td>
+                                <td>{{ $i->price }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-success" data-backdrop="static"
+                                        data-keyboard="false" data-toggle="modal" data-target="#item{{ $i->id }}">
+                                        <i class="fas fa-cart-plus"></i>
+                                    </button>
+                                </td>
+                                <!-- Modal -->
+                                <div class="modal fade" id="item{{ $i->id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form action="{{ route('admin.addItem') }}" method="post">
+                                            @csrf
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">รายการสินค้า</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <div class="input-group mb-1">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">ชื่อสินค้า</span>
+                                                        </div>
+                                                        <input type="text" readonly class="form-control" name="name" value="{{ $i->name }}">
+                                                    </div>
+
+                                                    <div class="input-group mb-1">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">ราคา</span>
+                                                        </div>
+                                                        <input type="number" readonly class="form-control" name="price" value="{{ $i->price }}">
+                                                    </div>
+
+                                                    <div class="input-group mb-1">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">จำนวน</span>
+                                                        </div>
+                                                        <input type="number" class="form-control" name="quantity" value="{{ $i->quantity }}" min="1">
+                                                    </div>
+
+                                                    <input type="hidden" name="id" value="{{ $i->id }}">
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"data-dismiss="modal">ยกเลิก</button>
+                                                    <button type="submit" class="btn btn-primary">เพื่มสินค้า</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="col-7">
+            <div class="card p-1">
+                @if (Session::has('cart') && count(Session::get('cart')) > 0)
+
+                    <form action="" method="post">
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">สินค้า</th>
+                                    <th class="text-right">ราคา</th>
+                                    <th class="text-right">จำนวน</th>
+                                    <th class="text-right">รวม</th>
+                                    <th class="text-right">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (session('cart') as $id => $item)
+                                    <tr>
+                                        <td>{{ $item['name'] }}</td>
+                                        <td class="text-right">{{ number_format($item['price']) }}</td>
+                                        <td class="text-right">{{ $item['quantity'] }}</td>
+                                        <td class="text-right">{{ number_format($item['price'] * $item['quantity'], 2) }}
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    {{-- <form action="{{ route('updateCart') }}" method="post"> --}}
+                                                    {{-- <form action="" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id" value="{{ $id }}">
+                                                        <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
+                                                        <button type="submit" class="btn btn-sm btn-warning">
+                                                            <i class="fa-solid fa-plus"></i></button>
+                                                    </form> --}}
+                                                </div>
+
+                                                <div class="col-6">
+                                                    <form action="{{ route('admin.removeItem') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id"value="{{ $id }}">
+                                                        <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
+                                                        <button type="submit"class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                <tr>
+                                    <td style="font-weight: 900">ยอดรวม :</td>
+                                    <td colspan="2"></td>
+                                    <td class="text-right" style="font-weight: 900; color: red">{{ number_format($total, 2) }}</td>
+                                    <td class="text-center">บาท</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        {{-- @dump($order) --}}
+
+
+                        <div class="row">
+                            <div class="col">
+                                <a href="{{ route('admin.cancelCart') }}" class="btn btn-danger form-control">ยกเลิก</a>
+                            </div>
+                            <div class="col">
+                                <a href="" class="btn btn-success form-control">ขายสินค้า</a>
+                            </div>
+                        </div>
+
+                    </form>
+                    
+                @else
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ไม่มีสินค้าในตะกร้า</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                @endif
+            </div>
+        </div>
+
+    </div>
 
 @endsection

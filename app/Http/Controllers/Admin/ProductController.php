@@ -27,7 +27,7 @@ class ProductController extends Controller
             ]
         );
 
-        $product = Product::create(
+        Product::create(
             [
                 'name'      => $request->name,
                 'price'     => $request->price,
@@ -37,13 +37,32 @@ class ProductController extends Controller
         );
 
 
-        return redirect()->back()->with('create','เพื่มสินค้าเรียบร้อยแล้ว.');
+        return redirect()->back()->with('product_create','เพื่มสินค้าเรียบร้อยแล้ว.');
 
     }
 
-    public function edit(Request $request)
+    public function update(Request $request)
     {
-        dd($request->input());
+       
+        $request->validate(
+            [
+                'id'    => 'required',
+                'name'  => 'required',
+                'price' => 'required'
+            ]
+        );
+
+        Product::where('id', $request->id)
+            ->update(
+                    [
+                        'name' => $request->name , 
+                        'price' => $request->price,
+                        'quantity'  => 1 ,
+                        'user'      => Auth::user()->name
+                    ]
+                );
+        return redirect()->back()->with('product_update','แก้ไขสินค้าเรียบร้อย');
+
     }
 
     public function delete($id)
