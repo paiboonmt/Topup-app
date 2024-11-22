@@ -15,26 +15,35 @@ class CartController extends Controller
     public function index()
     {
         $products = Product::all();
-
-        // $order = Order::where('date','like','%'.Carbon::today().'%');
-
+        //-------------------------------------
         $order = DB::table('orders')
             ->select('num_bill')
-            ->whereDate('created_at' , 'LIKE' , '%'.Carbon::today().'%')->get();
+            ->where('created_at', 'LIKE', '%' . Carbon::today()->toDateString() . '%')
+            ->count();
 
-        if ( $order)
+        if ( $order == 0 ) {
+            $setNum_bill = date('dmY').+101;
+        } else {
+            $setNum_bill = 1;
+        }
+        //-------------------------------------
+        $codeNumber = round(microtime(true));
+        //-------------------------------------
 
         $cart = Session::get('cart', []);
         $total = 0;
+
         foreach ($cart as $item) {
             $total += $item['quantity'] * $item['price'];
         }
+
         return view('admin.cart_index',
             [
-                'products'  => $products,
-                'order'     => $order,
-                'cart'      => $cart,
-                'total'     => $total
+                'products'      => $products,
+                'setNum_bill'   => $setNum_bill,
+                'cart'          => $cart,
+                'total'         => $total,
+                'codeNumber'    => $codeNumber
             ]    
         );
     }

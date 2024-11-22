@@ -102,7 +102,7 @@
                                 @foreach (session('cart') as $id => $item)
                                     <tr>
                                         <td>{{ $item['name'] }}</td>
-                                        <td class="text-right">{{ number_format($item['price']) }}</td>
+                                        <td class="text-right">{{ number_format($item['price'],2) }}</td>
                                         <td class="text-right">{{ $item['quantity'] }}</td>
                                         <td class="text-right">{{ number_format($item['price'] * $item['quantity'], 2) }}
                                         </td>
@@ -142,8 +142,59 @@
                             </tbody>
                         </table>
 
-                        {{-- @dump($order) --}}
+                        
+                        {{-- หมายเลขบิล --}}
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">หมายเลขบิล | Tex Number</span>
+                            </div>
+                            <input type="text" class="form-control" name="num_bill" readonly value="{{ $setNum_bill }}">
+                        </div>
 
+                        {{-- หมายเลขบัตร --}}
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">หมายเลขบัตร | Qr Number</span>
+                            </div>
+                            <input type="text" class="form-control" name="code" readonly value="{{ $codeNumber }}">
+                        </div>
+
+                        {{-- ส่วนลด --}}
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">ส่วนลด | Discount</span>
+                            </div>
+                            <select class="custom-select" name="discount">
+                                <option value="0">0%</option>
+                                <option value="5%">5%</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+
+                        {{-- ประเภทการจ่าย --}}
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">ประเภทการจ่าย | Payment</span>
+                            </div>
+                            <select class="custom-select" name="payment" id="payment" onchange="hideSelectedOption(this)">
+                                <option value="cash">เงินสด</option>
+                                <option value="credit_card">บัตรเครดิต</option>
+                                <option value="monney_card">บัตรแทนเงินสด</option>
+                            </select>
+                            <script>
+                                function hideSelectedOption(selectElement) {
+                                    const options = selectElement.options;
+                                    // Loop through options and toggle their visibility
+                                    for (let i = 0; i < options.length; i++) {
+                                        if (options[i].value === selectElement.value) {
+                                            options[i].style.display = 'none'; // Hide selected option
+                                        } else {
+                                            options[i].style.display = ''; // Show other options
+                                        }
+                                    }
+                                }
+                            </script>
+                        </div>
 
                         <div class="row">
                             <div class="col">
