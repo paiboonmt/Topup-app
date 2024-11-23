@@ -208,12 +208,12 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">ชื่อลูกค้า</span>
                             </div>
-                            <input type="text" class="form-control" name="customerName">
+                            <input type="text" class="form-control" name="customerName" value="John Andersion">
                         </div>
 
                         {{-- หมายเหตุ --}}
                         <div class="input-group mb-1">
-                            <textarea rows="3" class="form-control" placeholder="Comment"  name="comment"></textarea>
+                            <textarea rows="3" class="form-control" placeholder="Comment"  name="comment">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, quo.</textarea>
                         </div>
 
                         {{-- ปุ่มกดยกเลิก และขายสินค้า  --}}

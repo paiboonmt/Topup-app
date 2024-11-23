@@ -90,7 +90,25 @@ class CartController extends Controller
 
     public function checkOut( Request $request)
     {
-        dd($request->input());
+        
+        $request->validate(
+            [
+                'num_bill'      => 'required|unique:orders,num_bill',
+                'code'          => 'required|unique:orders,ref_code',
+                'payment'       => 'required',
+                'customerName'  => 'required'
+            ]
+        );
+
+        // dd( session('cart',[]) , $request->input());
+
+
+        return to_route('admin.print');
+    }
+
+    public function print()
+    {
+        
     }
 
     // public function removeItem(Request $request) {
