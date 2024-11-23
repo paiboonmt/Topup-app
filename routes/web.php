@@ -48,11 +48,11 @@ Route::middleware(['auth','admin'])->group(function(){
 
     //CartController
     Route::controller(CartController::class)->group(function(){
-        Route::get('/admin/cart_index','index')->name('admin.cart_index');
-        Route::post('/admin/addItem','addItem')->name('admin.addItem');
-        Route::post('/admin/removeItem','removeItem')->name('admin.removeItem');
-
-        Route::get('/admin/cancelCart','cancelCart')->name('admin.cancelCart');
+        Route::get('/admin/cart','index')->name('admin.cart_index');
+        Route::post('/admin/additem','addItem')->name('admin.addItem');
+        Route::get('/admin/removeitem/{id}','removeItem')->name('admin.removeItem');
+        Route::get('/admin/cancelcart','cancelCart')->name('admin.cancelCart');
+        Route::post('/admin/checkout','checkOut')->name('admin.checkOut');
     });
 
     // AdminController

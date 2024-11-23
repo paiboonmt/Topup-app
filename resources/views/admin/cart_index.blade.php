@@ -5,14 +5,14 @@
 
     <div class="row p-1">
 
-        <div class="col-5">
+        <div class="col-6">
             <div class="card p-2">
-                <table class="table table-sm">
+                <table class="table" id="cart">
                     <thead>
                         <tr>
                             <th scope="col">ชื่อสินค้า</th>
                             <th scope="col">ราคาสินค้า</th>
-                            <th scope="col">เพื่มสินค้า</th>
+                            <th scope="col">เลือกสินค้า</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -78,16 +78,15 @@
                         @endforeach
                     </tbody>
                 </table>
-
             </div>
         </div>
 
-        <div class="col-7">
-            <div class="card p-1">
+        <div class="col-6">
+            <div class="card p-2">
                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
 
-                    <form action="" method="post">
-
+                    <form action="{{ route('admin.checkOut') }}" method="post">
+                        @csrf
                         <table class="table table-sm">
                             <thead>
                                 <tr>
@@ -99,7 +98,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (session('cart') as $id => $item)
+                                @foreach (session('cart',[]) as $id => $item)
                                     <tr>
                                         <td>{{ $item['name'] }}</td>
                                         <td class="text-right">{{ number_format($item['price'],2) }}</td>
@@ -108,26 +107,19 @@
                                         </td>
                                         <td class="text-right">
                                             <div class="row">
-                                                <div class="col-4">
-                                                    {{-- <form action="{{ route('updateCart') }}" method="post"> --}}
-                                                    {{-- <form action="" method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="product_id" value="{{ $id }}">
-                                                        <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
-                                                        <button type="submit" class="btn btn-sm btn-warning">
-                                                            <i class="fa-solid fa-plus"></i></button>
-                                                    </form> --}}
-                                                </div>
-
                                                 <div class="col-6">
-                                                    <form action="{{ route('admin.removeItem') }}" method="post">
+                                                    {{-- <form action="{{ route('admin.removeItem') }}" method="post">
                                                         @csrf
                                                         <input type="hidden" name="product_id"value="{{ $id }}">
                                                         <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
                                                         <button type="submit"class="btn btn-sm btn-danger">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                    </form>
+                                                    </form> --}}
+                                                    <a href="{{ route('admin.removeItem', $item['id'] ) }}" class="btn btn-sm btn-danger"
+                                                        onclick="return confirm('ลบสินค้า')">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
@@ -142,7 +134,6 @@
                             </tbody>
                         </table>
 
-                        
                         {{-- หมายเลขบิล --}}
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
@@ -196,12 +187,43 @@
                             </script>
                         </div>
 
+                        {{-- วันที่ซื้อ และวันหมดอายุ --}}
+                        <div class="row mb-1">
+                            <div class="input-group col-6">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">วันที่ซื้อ</span>
+                                </div>
+                                <input type="date" class="form-control" name="staDate" value="{{ date('Y-m-d') }}">
+                            </div>
+                            <div class="input-group col-6">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">วันสิ้นสุด</span>
+                                </div>
+                                <input type="date" class="form-control" name="expDate" value="{{ date('Y-m-d') }}">
+                            </div>
+                        </div>
+
+                        {{-- ชื่อลูกค้า --}}
+                        <div class="input-group mb-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">ชื่อลูกค้า</span>
+                            </div>
+                            <input type="text" class="form-control" name="customerName">
+                        </div>
+
+                        {{-- หมายเหตุ --}}
+                        <div class="input-group mb-1">
+                            <textarea rows="3" class="form-control" placeholder="Comment"  name="comment"></textarea>
+                        </div>
+
+                        {{-- ปุ่มกดยกเลิก และขายสินค้า  --}}
                         <div class="row">
                             <div class="col">
                                 <a href="{{ route('admin.cancelCart') }}" class="btn btn-danger form-control">ยกเลิก</a>
                             </div>
                             <div class="col">
-                                <a href="" class="btn btn-success form-control">ขายสินค้า</a>
+                                {{-- <a href="" class="btn btn-success form-control">ขายสินค้า</a> --}}
+                                <button type="submit" class="btn btn-success form-control">ขายสินค้า</button>
                             </div>
                         </div>
 
@@ -211,11 +233,11 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Action</th>
+                                <th class="text-left">สินค้า</th>
+                                <th class="text-right">ราคา</th>
+                                <th class="text-right">จำนวน</th>
+                                <th class="text-right">รวม</th>
+                                <th class="text-right">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -69,21 +69,16 @@ class CartController extends Controller
         return to_route('admin.cart_index');
     }
 
-    public function removeItem(Request $request) {
-        $productId = $request->product_id;
-        $quantity = $request->quantity;
-        $cart = session()->get('cart', []);
-        if (isset($cart[$productId])) {
-            if ( $quantity == 2 ) {
-                $cart[$productId]['quantity'] --  ;
-            } elseif ( $quantity == 1 ){
-                unset($cart[$productId]);
-            } else {
-                $cart[$productId]['quantity'] -- ;
-            }
-            session()->put('cart', $cart);
+    public function removeItem( $id )
+    {
+        $cart = session('cart', []);
+
+        // ตรวจสอบว่ามีสินค้าใน cart หรือไม่
+        if (isset($cart[$id])) {
+            unset($cart[$id]); // ลบสินค้าออกจาก cart
+            session(['cart' => $cart]); // อัปเดต cart ใน session
         }
-        return to_route('admin.cart_index');
+        return redirect()->back();
     }
 
     public function cancelCart()
@@ -92,4 +87,33 @@ class CartController extends Controller
         Session::forget('cart');
         return redirect()->back();
     }
+
+    public function checkOut( Request $request)
+    {
+        dd($request->input());
+    }
+
+    // public function removeItem(Request $request) {
+        
+
+    //     $count = count(session('cart'));
+    //     // dd( $request->input() , session('cart') , $count );
+
+    //     $productId = $request->product_id;
+    //     $quantity = $request->quantity;
+    //     $cart = session()->get('cart', []);
+    //     if (isset($cart[$productId])) {
+    //         if ( $quantity == 2 ) {
+    //             $cart[$productId]['quantity'] --  ;
+    //         } elseif ( $quantity == 1 ){
+    //             unset($cart[$productId]);
+    //         } else {
+    //             $cart[$productId]['quantity'] -- ;
+    //         }
+    //         session()->put('cart', $cart);
+    //     }
+    //     return to_route('admin.cart_index');
+    // }
+
+
 }

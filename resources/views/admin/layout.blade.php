@@ -282,43 +282,41 @@
                 // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
                 "buttons": ["excel"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
+        });
+        $(function() {
+            $("#cart").DataTable({
                 "responsive": true,
-            });
+                "lengthChange": false,
+                "autoWidth": false,
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
     </script>
 
     {{-- product --}}
-    @if (session('product_create'))
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: '{{ session('product_create') }}',
-                icon: "success",
-                timer: 2000, // optional auto-close timer
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        @if (session('product_create'))
+            <script>
+                Swal.fire({
+                    title: "Good job!",
+                    text: '{{ session('product_create') }}',
+                    icon: "success",
+                    timer: 2000, // optional auto-close timer
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
 
-    @if (session('product_update'))
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: '{{ session('product_update') }}',
-                icon: "success",
-                timer: 2000, // optional auto-close timer
-                showConfirmButton: false
-            });
-        </script>
-    @endif
-
+        @if (session('product_update'))
+            <script>
+                Swal.fire({
+                    title: "Good job!",
+                    text: '{{ session('product_update') }}',
+                    icon: "success",
+                    timer: 2000, // optional auto-close timer
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
+    {{-- product --}}
 
 </body>
 </html>
