@@ -134,6 +134,9 @@
                             </tbody>
                         </table>
 
+                        {{-- ราคารวมของสินค้า --}}
+                        <input type="hidden" name="total" value="{{ $total }}">
+
                         {{-- หมายเลขบิล --}}
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">

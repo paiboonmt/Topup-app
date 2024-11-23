@@ -100,15 +100,52 @@ class CartController extends Controller
             ]
         );
 
-        // dd( session('cart',[]) , $request->input());
+        $total          = $request->total;
+        $num_bill       = $request->num_bill;
+        $code           = $request->code;
+        $discount       = $request->discount;
+        $payment        = $request->payment;
+        $staDate        = $request->staDate;
+        $expDate        = $request->expDate;
+        $customerName   = $request->customerName;
+        $comment        = $request->comment;
+
+        if ( $discount != 0) {
+
+        } 
+
+        if ( $discount == 0) {
+
+            if ( $payment == 'cash') {
+                $net = 7;
+                $vat = ( $total * 7 ) / 100 ;
+            } elseif ( $payment == 'credit_card') {
+                $net = 3;
+                $vat = ( $total * 3 ) / 100 ;
+            } elseif ( $payment == 'monney_card' ) {
+                $net = 1;
+                $vat = 1;
+            }
 
 
-        return to_route('admin.print');
+
+            dd( $total , $net , $vat );
+
+
+
+        }
+       
+      
+
+
+        
+
+        // return to_route('admin.print');
     }
 
     public function print()
     {
-        
+        return view('admin.cart_print');
     }
 
     // public function removeItem(Request $request) {
