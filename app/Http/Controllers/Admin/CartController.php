@@ -168,7 +168,6 @@ class CartController extends Controller
             $order->exp_date    = $expDate;
             $order->comment     = $comment;
             $order->user        = Auth::user()->name;
-            
             $order->save();
 
         }
@@ -192,8 +191,20 @@ class CartController extends Controller
 
         // return to_route('admin.cart_index');
 
+        $data = [
+            'total'          => $request->total,
+            'num_bill'       => $request->num_bill,
+            'code'           => $request->code,
+            'discount'       => $request->discount,
+            'payment'        => $request->payment,
+            'staDate'        => $request->staDate,
+            'expDate'        => $request->expDate,
+            'customerName'   => $request->customerName,
+            'comment'        => $request->comment
+        ];
 
-        return to_route('admin.print');
+        // return to_route('admin.print',['data' => $data]);
+        return view('admin.cart_print',['data' => $data]);
     }
 
     public function print()
