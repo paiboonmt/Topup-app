@@ -9,13 +9,14 @@ class Order extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'ref_code',
+        'code',
         'num_bill',
         'fname',
         'discount',
-        'price',
         'vat7',
         'vat3',
+        'net',
+        'total',
         'payment',
         'sta_date',
         'exp_date',

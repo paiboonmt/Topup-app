@@ -4,11 +4,14 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use PDOException;
 
 class CartController extends Controller
 {
@@ -90,11 +93,10 @@ class CartController extends Controller
 
     public function checkOut( Request $request)
     {
-        
         $request->validate(
             [
-                'num_bill'      => 'required|unique:orders,num_bill',
-                'code'          => 'required|unique:orders,ref_code',
+                'num_bill'      => 'required',
+                'code'          => 'required|unique:orders,code',
                 'payment'       => 'required',
                 'customerName'  => 'required'
             ]
@@ -109,6 +111,16 @@ class CartController extends Controller
         $expDate        = $request->expDate;
         $customerName   = $request->customerName;
         $comment        = $request->comment;
+
+        session(['total' => $total]);
+        session(['num_bill' => $num_bill]);
+        session(['code' => $code]);
+        session(['discount' => $discount]);
+        session(['payment' => $payment]);
+        session(['staDate' => $staDate]);
+        session(['expDate' => $expDate]);
+        session(['customerName' => $customerName]);
+        session(['comment' => $comment]);
 
         if ( $discount != 0) {
 
@@ -127,20 +139,61 @@ class CartController extends Controller
                 $vat = 1;
             }
 
+            // dd( $total , $net , $vat );
 
-
-            dd( $total , $net , $vat );
-
-
+            // บันทึกข้อมูล
+            $order = new Order;
+            $order->code        = $code;
+            $order->num_bill    = $num_bill;
+            $order->fname       = $customerName;
+            $order->discount    = $discount;
+           
+            if ( $net == 7) 
+            {
+                $order->vat7        = $net;
+                $order->vat3        = 0 ;
+                $total              = $total+$vat;
+            } 
+            elseif ( $net == 3 ) 
+            {
+                $order->vat7        = 0;
+                $order->vat3        = $net;
+                $total              = $total+$vat;
+            }
+            
+            $order->net         = $vat;
+            $order->total       = $total;
+            $order->payment     = $payment;
+            $order->sta_date    = $staDate;
+            $order->exp_date    = $expDate;
+            $order->comment     = $comment;
+            $order->user        = Auth::user()->name;
+            
+            $order->save();
 
         }
-       
-      
+
+        $cart = session()->get('cart');
+        foreach ($cart as $id => $item) {
+          
+            $d = new OrderDetail;
+            $d->order_id        = $code; 
+            $d->product_id      = $item['id'];
+            $d->product_name    = $item['name'];
+            $d->quantity        = $item['quantity'];
+            $d->total           = $item['price'] * $item['quantity'] ;
+            $d->date            = Carbon::today();
+
+            $d->save();
+
+        }
+
+        // Session::forget('cart');
+
+        // return to_route('admin.cart_index');
 
 
-        
-
-        // return to_route('admin.print');
+        return to_route('admin.print');
     }
 
     public function print()
