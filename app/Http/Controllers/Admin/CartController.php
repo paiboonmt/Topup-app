@@ -212,6 +212,15 @@ class CartController extends Controller
         return view('admin.cart_print');
     }
 
+    public function reportTicket()
+    {
+        $data = DB::table('orders')
+            ->whereDate('created_at', Carbon::today())
+            ->orderByDesc('id')
+            ->get();
+        return view('admin.report_ticket',['data' => $data]);
+    }
+
     // public function removeItem(Request $request) {
         
 

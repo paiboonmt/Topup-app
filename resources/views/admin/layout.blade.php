@@ -99,6 +99,14 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('admin.report_ticket') }}"
+                                class="nav-link {{ request()->routeIs('admin.report_ticket') ? 'active' : '' }}">
+                                <i class="fa-solid fa-file-invoice nav-icon"></i>
+                                <p>รายงานการขาย</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('admin.product_index') }}"
                                 class="nav-link {{ request()->routeIs('admin.product_index') ? 'active' : '' }}">
                                 <i class="fab fa-product-hunt nav-icon"></i>

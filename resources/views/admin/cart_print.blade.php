@@ -84,4 +84,11 @@
 
 <script>
     window.print();
+    setTimeout(function() {
+        window.location.href = "{{ route('admin.cart_index') }}";
+    }, 1000); // 1-second delay
 </script>
+
+@php
+    Session::forget('cart');
+@endphp 

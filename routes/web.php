@@ -54,6 +54,9 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/cancelcart','cancelCart')->name('admin.cancelCart');
         Route::post('/admin/checkout','checkOut')->name('admin.checkOut');
         Route::get('/admin/print','print')->name('admin.print');
+
+        // report
+        Route::get('/admin/report_ticket','reportTicket')->name('admin.report_ticket');
     });
 
     // AdminController
