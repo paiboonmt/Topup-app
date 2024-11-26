@@ -19,7 +19,7 @@
                         @foreach ($products as $i)
                             <tr>
                                 <td>{{ $i->name }}</td>
-                                <td>{{ $i->price }}</td>
+                                <td class="text-left">{{ number_format($i->price,2) }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-success" data-backdrop="static"
                                         data-keyboard="false" data-toggle="modal" data-target="#item{{ $i->id }}">

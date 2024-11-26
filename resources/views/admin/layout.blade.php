@@ -101,7 +101,7 @@
                         <li class="nav-item">
                             <a href="{{ route('admin.report_ticket') }}"
                                 class="nav-link {{ request()->routeIs('admin.report_ticket') ? 'active' : '' }}">
-                                <i class="fa-solid fa-file-invoice nav-icon"></i>
+                                <i class="fas fa-clipboard-list nav-icon"></i>
                                 <p>รายงานการขาย</p>
                             </a>
                         </li>
