@@ -27,7 +27,14 @@ class CartController extends Controller
         if ( $order == 0 ) {
             $setNum_bill = date('dmY').+101;
         } else {
-            $setNum_bill = 1;
+            $string = DB::table('orders')
+                ->whereDate('created_at', Carbon::today())
+                ->orderByDesc('id')
+                ->first();
+            // dd($string);
+            $num_bill = intval($string->num_bill);
+            $setNum_bill = $num_bill + 1 ;
+            // dd($setNum_bill);
         }
         //-------------------------------------
         $codeNumber = round(microtime(true));
@@ -214,34 +221,21 @@ class CartController extends Controller
 
     public function reportTicket()
     {
-        $data = DB::table('orders')
-            ->whereDate('created_at', Carbon::today())
-            ->orderByDesc('id')
-            ->get();
-        return view('admin.report_ticket',['data' => $data]);
+        $data = DB::table('orders') // Correct reference to 'orders'
+        ->join('order_details', 'orders.code', '=', 'order_details.order_id') // Corrected to 'orders'
+        ->join('products', 'order_details.product_id', '=', 'products.id')
+        ->select('orders.*', 'order_details.*', 'products.*') // Ensure 'orders.*' is correct
+        ->whereDate('orders.created_at', Carbon::today()) // Explicit table reference for created_at
+        ->orderByDesc('orders.id') // Explicit table reference for id
+        ->get();
+        // dd($data[0]->code);
+
+        $products = DB::table('order_details')
+        ->where('order_id', $data[0]->code)
+        ->get();
+
+        return view('admin.report_ticket',['data' => $data , 'produsts' => $products]);
     }
-
-    // public function removeItem(Request $request) {
-        
-
-    //     $count = count(session('cart'));
-    //     // dd( $request->input() , session('cart') , $count );
-
-    //     $productId = $request->product_id;
-    //     $quantity = $request->quantity;
-    //     $cart = session()->get('cart', []);
-    //     if (isset($cart[$productId])) {
-    //         if ( $quantity == 2 ) {
-    //             $cart[$productId]['quantity'] --  ;
-    //         } elseif ( $quantity == 1 ){
-    //             unset($cart[$productId]);
-    //         } else {
-    //             $cart[$productId]['quantity'] -- ;
-    //         }
-    //         session()->put('cart', $cart);
-    //     }
-    //     return to_route('admin.cart_index');
-    // }
 
 
 }

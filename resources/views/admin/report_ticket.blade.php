@@ -11,9 +11,10 @@
                 <thead>
                     <tr>
                         <th hidden>id</th>
-                        <th>code</th>
-                        <th hidden>bill</th>
-                        <th>name</th>
+                        <th hidden>code</th>
+                        <th>bill</th>
+                        <th hidden>name</th>
+                        <th>product</th>
                         <th>discount</th>
                         <th>vat7</th>
                         <th>vat3</th>
@@ -27,9 +28,14 @@
                     @foreach ($data as $item)
                         <tr>
                             <td hidden>{{ $item->id }}</td>
-                            <td>{{ $item->code }}</td>
-                            <td hidden>{{ $item->num_bill }}</td>
-                            <td>{{ $item->fname }}</td>
+                            <td hidden>{{ $item->code }}</td>
+                            <td>{{ $item->num_bill }}</td>
+                            <td hidden>{{ $item->fname }}</td>
+                            <td>
+                                @foreach ($produsts as $i)
+                                    {{ $i->product_name }}
+                                @endforeach
+                            </td>
                             <td>{{ $item->discount }}</td>
                             <td>{{ $item->vat7 }}</td>
                             <td>{{ $item->vat3 }}</td>
