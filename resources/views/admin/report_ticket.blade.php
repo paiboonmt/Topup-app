@@ -22,6 +22,7 @@
                         <th>total</th>
                         <th>payment</th>
                         <th>user</th>
+                        <th>action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +44,11 @@
                             <td>{{ number_format($item->total,2) }}</td>
                             <td>{{ $item->payment }}</td>
                             <td>{{ $item->user }}</td>
+                            <td>
+                                <a href="{{ route('admin.reportDelete' , $item->code) }}" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจแล้วใช่ไหมที่จะลบข้อมูล') ">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -11,7 +11,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use PDOException;
 
 class CartController extends Controller
 {
@@ -230,11 +229,18 @@ class CartController extends Controller
         ->get();
         // dd($data[0]->code);
 
-        $products = DB::table('order_details')
-        ->where('order_id', $data[0]->code)
-        ->get();
+      
 
-        return view('admin.report_ticket',['data' => $data , 'produsts' => $products]);
+        return view('admin.report_ticket',['data' => $data]);
+    }
+
+    public function reportDelete(string $code)
+    {
+        $order = DB::table('orders')->where('code',$code)->delete();
+        $order_detail = DB::table('order_details')->where('order_id',$code)->delete();
+
+        return to_route('admin.report_ticket');
+        
     }
 
 
