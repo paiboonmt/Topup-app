@@ -58,6 +58,7 @@ Route::middleware(['auth','admin'])->group(function(){
         // report
         Route::get('/admin/report_ticket','reportTicket')->name('admin.report_ticket');
         Route::get('/admin/reportDelete/{id}','reportDelete')->name('admin.reportDelete');
+        Route::get('/admin/viewBill/{code}','viewBill')->name('admin.view_bill');
     });
 
     // AdminController

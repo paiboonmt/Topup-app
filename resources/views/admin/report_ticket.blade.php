@@ -4,6 +4,8 @@
 
 @section('content')
 
+@dump($data)
+
 <div class="row">
     <div class="col p-1">
         <div class="card p-1">
@@ -11,10 +13,9 @@
                 <thead>
                     <tr>
                         <th hidden>id</th>
-                        <th hidden>code</th>
-                        <th>bill</th>
+                        <th>Code</th>
+                        <th>Bill</th>
                         <th hidden>name</th>
-                        <th>product</th>
                         <th>discount</th>
                         <th>vat7</th>
                         <th>vat3</th>
@@ -27,16 +28,11 @@
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
-                        <tr>
-                            <td hidden>{{ $item->id }}</td>
-                            <td hidden>{{ $item->code }}</td>
+                        {{-- <tr>
+                            <td hidden>{{ $item->order_id }}</td>
+                            <td>{{ $item->code }}</td>
                             <td>{{ $item->num_bill }}</td>
                             <td hidden>{{ $item->fname }}</td>
-                            <td>
-                                @foreach ($produsts as $i)
-                                    {{ $i->product_name }}
-                                @endforeach
-                            </td>
                             <td>{{ $item->discount }}</td>
                             <td>{{ $item->vat7 }}</td>
                             <td>{{ $item->vat3 }}</td>
@@ -45,11 +41,12 @@
                             <td>{{ $item->payment }}</td>
                             <td>{{ $item->user }}</td>
                             <td>
+                                <a href="{{ route('admin.view_bill' , $item->code) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.reportDelete' , $item->code) }}" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจแล้วใช่ไหมที่จะลบข้อมูล') ">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
-                        </tr>
+                        </tr> --}}
                     @endforeach
                 </tbody>
             </table>

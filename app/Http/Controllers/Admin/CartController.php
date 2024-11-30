@@ -220,16 +220,14 @@ class CartController extends Controller
 
     public function reportTicket()
     {
-        $data = DB::table('orders') // Correct reference to 'orders'
-        ->join('order_details', 'orders.code', '=', 'order_details.order_id') // Corrected to 'orders'
+        $data = DB::table('orders')
+        ->join('order_details', 'orders.code', '=', 'order_details.order_id')
         ->join('products', 'order_details.product_id', '=', 'products.id')
-        ->select('orders.*', 'order_details.*', 'products.*') // Ensure 'orders.*' is correct
-        ->whereDate('orders.created_at', Carbon::today()) // Explicit table reference for created_at
-        ->orderByDesc('orders.id') // Explicit table reference for id
+        ->select('orders.*','orders.code')
+        ->whereDate('orders.created_at', Carbon::today())
+        ->groupBy('orders.code')
+        ->orderByDesc('orders.id')
         ->get();
-        // dd($data[0]->code);
-
-      
 
         return view('admin.report_ticket',['data' => $data]);
     }
@@ -241,6 +239,19 @@ class CartController extends Controller
 
         return to_route('admin.report_ticket');
         
+    }
+
+    public function viewBill( string $code){
+        
+        $data = DB::table('orders')
+            ->join('order_details' , 'orders.code' , '=' , 'order_details.order_id' )
+            ->join('products' ,'order_details.product_id' , '=' , 'products.id')
+            ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
+            ->where('orders.code',$code)
+            ->get();
+        
+            return view('admin.view_bill',['data' => $data]);
+
     }
 
 
