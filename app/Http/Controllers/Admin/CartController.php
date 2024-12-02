@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Termwind\Components\Raw;
 
 class CartController extends Controller
 {
@@ -220,13 +221,35 @@ class CartController extends Controller
 
     public function reportTicket()
     {
-        $data = DB::table('orders')
-        ->join('order_details', 'orders.code', '=', 'order_details.order_id')
-        ->join('products', 'order_details.product_id', '=', 'products.id')
-        ->select('orders.*','orders.code')
-        ->whereDate('orders.created_at', Carbon::today())
-        ->groupBy('orders.code')
-        ->orderByDesc('orders.id')
+        // $data = DB::table('orders')
+        // ->join('order_details', 'orders.code', '=', 'order_details.order_id')
+        // ->join('products', 'order_details.product_id', '=', 'products.id')
+        // ->select('orders.*','order_details.*')
+        // ->whereDate('orders.created_at', Carbon::today())
+        // ->groupByRaw('orders.code')
+        // ->orderByDesc('orders.id')
+        // ->get();
+
+        $date = request('date'); // Assuming you're using the Laravel request helper for fetching POST data
+
+        $data = DB::table('orders as or')
+        ->join('order_details as od', 'or.code', '=', 'od.order_id')
+        ->join('products as p', 'od.product_id', '=', 'p.id')
+        ->select(
+            'or.code',
+            DB::raw('MAX(od.order_id) as order_id'), // Use aggregate functions
+            DB::raw('MAX(or.num_bill) as num_bill'), // Use aggregate functions
+            DB::raw('MAX(or.fname ) as fname '), // Use aggregate functions
+            DB::raw('MAX(or.discount) as discount'),
+            DB::raw('MAX(or.vat7) as vat7'),
+            DB::raw('MAX(or.vat3) as vat3'),
+            DB::raw('MAX(or.net) as net'),
+            DB::raw('MAX(or.total) as total'),
+            DB::raw('MAX(or.payment) as payment'),
+            DB::raw('MAX(or.user) as user')
+        )
+        ->whereDate('or.created_at', Carbon::today())
+        ->groupBy('or.code') // Group by the required column
         ->get();
 
         return view('admin.report_ticket',['data' => $data]);

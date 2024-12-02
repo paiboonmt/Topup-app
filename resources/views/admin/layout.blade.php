@@ -100,7 +100,7 @@
 
                         <li class="nav-item">
                             <a href="{{ route('admin.report_ticket') }}"
-                                class="nav-link {{ request()->routeIs('admin.report_ticket') ? 'active' : '' }}">
+                                class="nav-link {{ request()->routeIs(['admin.report_ticket','admin.view_bill']) ? 'active' : '' }}">
                                 <i class="fas fa-clipboard-list nav-icon"></i>
                                 <p>รายงานการขาย</p>
                             </a>

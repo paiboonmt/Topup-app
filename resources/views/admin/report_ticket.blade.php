@@ -4,8 +4,6 @@
 
 @section('content')
 
-@dump($data)
-
 <div class="row">
     <div class="col p-1">
         <div class="card p-1">
@@ -28,7 +26,7 @@
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
-                        {{-- <tr>
+                        <tr>
                             <td hidden>{{ $item->order_id }}</td>
                             <td>{{ $item->code }}</td>
                             <td>{{ $item->num_bill }}</td>
@@ -46,7 +44,7 @@
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>
-                        </tr> --}}
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
