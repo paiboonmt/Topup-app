@@ -221,25 +221,15 @@ class CartController extends Controller
 
     public function reportTicket()
     {
-        // $data = DB::table('orders')
-        // ->join('order_details', 'orders.code', '=', 'order_details.order_id')
-        // ->join('products', 'order_details.product_id', '=', 'products.id')
-        // ->select('orders.*','order_details.*')
-        // ->whereDate('orders.created_at', Carbon::today())
-        // ->groupByRaw('orders.code')
-        // ->orderByDesc('orders.id')
-        // ->get();
-
-        $date = request('date'); // Assuming you're using the Laravel request helper for fetching POST data
-
+  
+        $date = request('date'); 
         $data = DB::table('orders as or')
         ->join('order_details as od', 'or.code', '=', 'od.order_id')
         ->join('products as p', 'od.product_id', '=', 'p.id')
-        ->select(
-            'or.code',
-            DB::raw('MAX(od.order_id) as order_id'), // Use aggregate functions
-            DB::raw('MAX(or.num_bill) as num_bill'), // Use aggregate functions
-            DB::raw('MAX(or.fname ) as fname '), // Use aggregate functions
+        ->select('or.code',
+            DB::raw('MAX(od.order_id) as order_id'), 
+            DB::raw('MAX(or.num_bill) as num_bill'),
+            DB::raw('MAX(or.fname ) as fname '),
             DB::raw('MAX(or.discount) as discount'),
             DB::raw('MAX(or.vat7) as vat7'),
             DB::raw('MAX(or.vat3) as vat3'),
@@ -249,10 +239,17 @@ class CartController extends Controller
             DB::raw('MAX(or.user) as user')
         )
         ->whereDate('or.created_at', Carbon::today())
-        ->groupBy('or.code') // Group by the required column
+        ->groupBy('or.code')
         ->get();
 
-        return view('admin.report_ticket',['data' => $data]);
+        // dump($data[0]->code);
+
+        $products = DB::table('order_details')
+            ->select('product_name')
+            ->where('order_id',$data[0]->code)
+            ->get();
+
+        return view('admin.report_ticket',['data' => $data , 'produsts' => $products]);
     }
 
     public function reportDelete(string $code)

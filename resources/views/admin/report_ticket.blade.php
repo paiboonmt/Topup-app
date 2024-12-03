@@ -14,6 +14,7 @@
                         <th>Code</th>
                         <th>Bill</th>
                         <th hidden>name</th>
+                        <th>Product name</th>
                         <th>discount</th>
                         <th>vat7</th>
                         <th>vat3</th>
@@ -31,6 +32,11 @@
                             <td>{{ $item->code }}</td>
                             <td>{{ $item->num_bill }}</td>
                             <td hidden>{{ $item->fname }}</td>
+                            <td>
+                                @foreach ($produsts as $product)
+                                        {{ $product->product_name }} | <br>
+                                @endforeach
+                            </td>
                             <td>{{ $item->discount }}</td>
                             <td>{{ $item->vat7 }}</td>
                             <td>{{ $item->vat3 }}</td>
