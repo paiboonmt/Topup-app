@@ -10,7 +10,6 @@
             <table class="table" id="example1">
                 <thead>
                     <tr>
-                        <th hidden>id</th>
                         <th>Code</th>
                         <th>Bill</th>
                         <th hidden>name</th>
@@ -28,15 +27,21 @@
                 <tbody>
                     @foreach ($data as $item)
                         <tr>
-                            <td hidden>{{ $item->order_id }}</td>
                             <td>{{ $item->code }}</td>
                             <td>{{ $item->num_bill }}</td>
                             <td hidden>{{ $item->fname }}</td>
                             <td>
-                                @foreach ($produsts as $product)
-                                        {{ $product->product_name }} | <br>
+                                @php
+                                    $products = DB::table('order_details')
+                                    ->select(DB::raw('GROUP_CONCAT(product_name) as product_names'), 'order_id' , DB::raw('MAX(quantity) as quantity') , DB::raw('MAX(product_id) as product_id') , DB::raw('MAX(total) as total'))
+                                    ->where('order_id', $item->code)
+                                    ->groupBy('order_id','product_id')
+                                    ->get();
+                                @endphp
+                                @foreach ($products as $product)
+                                        {{ $product->product_names }} | * | {{ $product->quantity }} | {{ $product->total }}<br>
                                 @endforeach
-                            </td>
+                            </td>   
                             <td>{{ $item->discount }}</td>
                             <td>{{ $item->vat7 }}</td>
                             <td>{{ $item->vat3 }}</td>
@@ -45,6 +50,7 @@
                             <td>{{ $item->payment }}</td>
                             <td>{{ $item->user }}</td>
                             <td>
+                                <a href="{{ route('admin.reprint_ticket' , $item->code ) }}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a>
                                 <a href="{{ route('admin.view_bill' , $item->code) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.reportDelete' , $item->code) }}" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจแล้วใช่ไหมที่จะลบข้อมูล') ">
                                     <i class="fas fa-trash"></i>

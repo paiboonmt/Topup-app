@@ -221,8 +221,6 @@ class CartController extends Controller
 
     public function reportTicket()
     {
-  
-        $date = request('date'); 
         $data = DB::table('orders as or')
         ->join('order_details as od', 'or.code', '=', 'od.order_id')
         ->join('products as p', 'od.product_id', '=', 'p.id')
@@ -242,14 +240,7 @@ class CartController extends Controller
         ->groupBy('or.code')
         ->get();
 
-        // dump($data[0]->code);
-
-        $products = DB::table('order_details')
-            ->select('product_name')
-            ->where('order_id',$data[0]->code)
-            ->get();
-
-        return view('admin.report_ticket',['data' => $data , 'produsts' => $products]);
+        return view('admin.report_ticket',['data' => $data ]);
     }
 
     public function reportDelete(string $code)
@@ -274,5 +265,18 @@ class CartController extends Controller
 
     }
 
+    public function rePrintTicket( string $code)
+    {      
+        $data = DB::table('orders')
+        ->join('order_details' , 'orders.code' , '=' , 'order_details.order_id' )
+        ->join('products' ,'order_details.product_id' , '=' , 'products.id')
+        ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
+        ->where('orders.code',$code)
+        ->get();
+
+        // dump($data);
+
+        return view('admin.print.reprint',compact('data'));
+    }
 
 }
