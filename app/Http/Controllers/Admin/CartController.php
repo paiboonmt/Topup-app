@@ -270,7 +270,7 @@ class CartController extends Controller
         $data = DB::table('orders')
         ->join('order_details' , 'orders.code' , '=' , 'order_details.order_id' )
         ->join('products' ,'order_details.product_id' , '=' , 'products.id')
-        ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
+        ->select('orders.*', 'orders.total AS ototal' ,'order_details.*', 'order_details.quantity AS qty' , 'products.*')
         ->where('orders.code',$code)
         ->get();
 

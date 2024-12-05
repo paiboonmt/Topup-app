@@ -14,6 +14,12 @@
                 font-size: 18px;
                 font-weight: bold;
             }
+            .text-end{
+                padding-right: 35px;
+            }
+            hr{
+                border-bottom: 2px dotted;
+            }
         </style>
 </head>
 
@@ -22,59 +28,70 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-12 mx-auto">
+            <div class="col-12 p-2">
 
                 <div id="h" class="row">
                     <div class="col text-center">TIGER MUAYTHAI (PHUKET)</div>
+                    <hr>
                 </div>
     
                 @foreach ($data as  $item)
                     <div class="row">
-                        <div id="t" class="col text-left">{{ $item->name }} | {{ $item->quantity }}</div>
-                        <div id="t" class="col text-right">{{ number_format($item->price,2) }}</div>
+                        <div id="t" class="col">{{ $item->name }} | จำนวน : {{ $item->qty }}</div>
+                        <div id="t" class="col text-end">{{ number_format($item->qty * $item->price,2) }}</div>
                     </div>
                 @endforeach
 
-                <div class="row">
-                    <div id="t" class="col text-left">ภาษีมูลค่าเพื่ม :</div>
-                    <div id="t" class="col text-left">{{ number_format($data[0]->net,2) }}</div>
-                </div>
+                @if ($data[0]->vat7 == 7)
+                    @php
+                        $vat = 7
+                    @endphp
+                @else
+                    @php
+                        $vat = 3
+                    @endphp
+                @endif
 
+                <div class="row">
+                    <div id="t" class="col">ภาษีมูลค่าเพื่ม : {{ $vat }} %</div>
+                    <div id="t" class="col text-end">{{ number_format($data[0]->net,2) }}</div>
+                </div>
+            
                 <div class="row">
                     <div id="t" class="col text-left">ยอดรวม</div>
-                    <div id="t" class="col text-left">{{ number_format($data[0]->total,2) }}</div>
+                    <div id="t" class="col text-end">{{ number_format($data[0]->ototal,2) }}</div>
+                </div>
+            <hr>
+                <div class="row">
+                    <div id="t" class="col">หมายเลขบิล : </div>
+                    <div id="t" class="col text-end">{{ $data[0]->num_bill }}</div>
                 </div>
 
                 <div class="row">
-                    <div id="t" class="col">Tex : </div>
-                    <div id="t" class="col">{{ $data[0]->num_bill }}</div>
+                    <div id="t" class="col">หมายเลขบัตร</div>
+                    <div id="t" class="col text-end">{{ $data[0]->code }}</div>
                 </div>
 
                 <div class="row">
-                    <div id="t" class="col">Code</div>
-                    <div id="t" class="col">{{ $data[0]->code }}</div>
+                    <div id="t" class="col">ส่วนลด</div>
+                    <div id="t" class="col text-end">{{ $data[0]->discount }}</div>
                 </div>
 
                 <div class="row">
-                    <div id="t" class="col">Discount</div>
-                    <div id="t" class="col">{{ $data[0]->discount }}</div>
+                    <div id="t" class="col">การจ่าย</div>
+                    <div id="t" class="col text-end">{{ $data[0]->payment }}</div>
                 </div>
 
                 <div class="row">
-                    <div id="t" class="col">Payment</div>
-                    <div id="t" class="col">{{ $data[0]->payment }}</div>
+                    <div id="t" class="col">เริ่ม :{{ $data[0]->sta_date }}</div>
+                    <div id="t" class="col text-end">หมดเวลา : {{ $data[0]->exp_date }}</div>
                 </div>
 
                 <div class="row">
-                    <div id="t" class="col">Start :{{ $data[0]->sta_date }}</div>
-                    <div id="t" class="col">End : {{ $data[0]->exp_date }}</div>
+                    <div id="t" class="col">ชื่อ :</div>
+                    <div id="t" class="col text-end">{{ $data[0]->fname }}</div>
                 </div>
-
-                <div class="row">
-                    <div id="t" class="col">Name :</div>
-                    <div id="t" class="col">{{ $data[0]->fname }}</div>
-                </div>
-
+            <hr>
                 <div class="row">
                     <p id="t">{{ $data[0]->comment }}</p>
                 </div>
@@ -92,12 +109,8 @@
 </html>
 
 <script>
-    // window.print();
-    // setTimeout(function() {
-    //     window.location.href = "{{ route('admin.cart_index') }}";
-    // }, 1000);
+    window.print();
+    setTimeout(function() {
+         window.location.href = "{{ route('admin.report_ticket') }}";
+     }, 1000);
 </script>
-
-{{-- @php
-    Session::forget('cart');
-@endphp  --}}
