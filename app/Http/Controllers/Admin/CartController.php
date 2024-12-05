@@ -11,7 +11,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Termwind\Components\Raw;
 
 class CartController extends Controller
 {
@@ -26,15 +25,14 @@ class CartController extends Controller
 
         if ( $order == 0 ) {
             $setNum_bill = date('dmY').+101;
+            $setNum_bill = intval($setNum_bill);
         } else {
             $string = DB::table('orders')
                 ->whereDate('created_at', Carbon::today())
                 ->orderByDesc('id')
                 ->first();
-            // dd($string);
             $num_bill = intval($string->num_bill);
             $setNum_bill = $num_bill + 1 ;
-            // dd($setNum_bill);
         }
         //-------------------------------------
         $codeNumber = round(microtime(true));
@@ -199,7 +197,7 @@ class CartController extends Controller
         // return to_route('admin.cart_index');
 
         $data = [
-            'total'          => $request->total,
+            'total'          => $total,
             'num_bill'       => $request->num_bill,
             'code'           => $request->code,
             'discount'       => $request->discount,
@@ -207,7 +205,10 @@ class CartController extends Controller
             'staDate'        => $request->staDate,
             'expDate'        => $request->expDate,
             'customerName'   => $request->customerName,
-            'comment'        => $request->comment
+            'comment'        => $request->comment,
+            'net'            => $net,
+            'vat'            => $vat,
+           
         ];
 
         // return to_route('admin.print',['data' => $data]);

@@ -106,22 +106,10 @@
                                         <td class="text-right">{{ number_format($item['price'] * $item['quantity'], 2) }}
                                         </td>
                                         <td class="text-right">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    {{-- <form action="{{ route('admin.removeItem') }}" method="post">
-                                                        @csrf
-                                                        <input type="hidden" name="product_id"value="{{ $id }}">
-                                                        <input type="hidden" name="quantity" value="{{ $item['quantity'] }}">
-                                                        <button type="submit"class="btn btn-sm btn-danger">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </form> --}}
-                                                    <a href="{{ route('admin.removeItem', $item['id'] ) }}" class="btn btn-sm btn-danger"
-                                                        onclick="return confirm('ลบสินค้า')">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            <a href="{{ route('admin.removeItem', $item['id'] ) }}" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('ลบสินค้า')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -140,7 +128,7 @@
                         {{-- หมายเลขบิล --}}
                         <div class="input-group mb-1">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">หมายเลขบิล | Tex Number</span>
+                                <span class="input-group-text">หมายเลขบิล | Bill Number</span>
                             </div>
                             <input type="text" class="form-control" name="num_bill" readonly value="{{ $setNum_bill }}">
                         </div>

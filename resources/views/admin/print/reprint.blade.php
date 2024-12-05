@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>re_print</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <style>
             #t{
@@ -32,8 +32,8 @@
 
                 <div id="h" class="row">
                     <div class="col text-center">TIGER MUAYTHAI (PHUKET)</div>
-                    <hr>
                 </div>
+                <hr>
     
                 @foreach ($data as  $item)
                     <div class="row">
@@ -61,7 +61,8 @@
                     <div id="t" class="col text-left">ยอดรวม</div>
                     <div id="t" class="col text-end">{{ number_format($data[0]->ototal,2) }}</div>
                 </div>
-            <hr>
+                <hr>
+
                 <div class="row">
                     <div id="t" class="col">หมายเลขบิล : </div>
                     <div id="t" class="col text-end">{{ $data[0]->num_bill }}</div>
@@ -88,17 +89,25 @@
                 </div>
 
                 <div class="row">
-                    <div id="t" class="col">ชื่อ :</div>
+                    <div id="t" class="col">ชื่อลูกค้า :</div>
                     <div id="t" class="col text-end">{{ $data[0]->fname }}</div>
                 </div>
-            <hr>
+                <hr>
+
                 <div class="row">
                     <p id="t">{{ $data[0]->comment }}</p>
                 </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col text-center">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=1234567899876543231" width="80" height="80">
+                    </div>
+                </div>
+                <hr>
 
             </div>
         </div>
-
 
     </div>
 
