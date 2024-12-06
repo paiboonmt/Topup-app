@@ -129,6 +129,54 @@ class CartController extends Controller
 
         if ( $discount != 0) {
 
+
+            $netDiscount = ( $total * $discount ) / 100 ;
+
+            $netTotal = $total - $netDiscount;
+            
+            $total = $total - $netDiscount;
+
+            if ( $payment == 'cash') {
+                $net = 7;
+                $vat = ( $total * 7 ) / 100 ;
+            } elseif ( $payment == 'credit_card') {
+                $net = 3;
+                $vat = ( $total * 3 ) / 100 ;
+            } elseif ( $payment == 'monney_card' ) {
+                $net = 1;
+                $vat = 1;
+            }
+
+            // dd( $discount , $total , $netDiscount );
+
+            // บันทึกข้อมูล
+            $order = new Order;
+            $order->code        = $code;
+            $order->num_bill    = $num_bill;
+            $order->fname       = $customerName;
+            $order->discount    = $netDiscount;
+           
+            if ( $net == 7) 
+            {
+                $order->vat7        = $net;
+                $order->vat3        = 0 ;
+                $total              = $total+$vat;
+            } 
+            elseif ( $net == 3 ) 
+            {
+                $order->vat7        = 0;
+                $order->vat3        = $net;
+                $total              = $total+$vat;
+            }
+            
+            $order->net         = $vat;
+            $order->total       = $total;
+            $order->payment     = $payment;
+            $order->sta_date    = $staDate;
+            $order->exp_date    = $expDate;
+            $order->comment     = $comment;
+            $order->user        = Auth::user()->name;
+            // $order->save();
         } 
 
         if ( $discount == 0) {
@@ -187,20 +235,17 @@ class CartController extends Controller
             $d->quantity        = $item['quantity'];
             $d->total           = $item['price'] * $item['quantity'] ;
             $d->date            = Carbon::today();
-
-            $d->save();
+            // $d->save();
 
         }
-
-        // Session::forget('cart');
-
-        // return to_route('admin.cart_index');
 
         $data = [
             'total'          => $total,
             'num_bill'       => $request->num_bill,
             'code'           => $request->code,
             'discount'       => $request->discount,
+            'netDiscount'       => $netDiscount,
+            'netTotal'       => $netTotal,
             'payment'        => $request->payment,
             'staDate'        => $request->staDate,
             'expDate'        => $request->expDate,
@@ -211,7 +256,6 @@ class CartController extends Controller
            
         ];
 
-        // return to_route('admin.print',['data' => $data]);
         return view('admin.cart_print',['data' => $data]);
     }
 

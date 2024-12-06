@@ -147,9 +147,9 @@
                                 <span class="input-group-text">ส่วนลด | Discount</span>
                             </div>
                             <select class="custom-select" name="discount">
-                                <option value="0">0%</option>
-                                <option value="5%">5%</option>
-                                <option value="3">Three</option>
+                                <option value="0">0 %</option>
+                                <option value="3">3 %</option>
+                                <option value="5">5 %</option>
                             </select>
                         </div>
 
@@ -204,7 +204,10 @@
 
                         {{-- หมายเหตุ --}}
                         <div class="input-group mb-1">
-                            <textarea rows="3" class="form-control" placeholder="Comment"  name="comment">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, quo.</textarea>
+                            <textarea rows="3" 
+                            class="form-control" 
+                            placeholder="Comment"  
+                            name="comment">ความสุขคือเมื่อสิ่งที่คุณคิด สิ่งที่คุณพูด และสิ่งที่คุณทำนั้นเป็นไปในทางเดียวกัน</textarea>
                         </div>
 
                         {{-- ปุ่มกดยกเลิก และขายสินค้า  --}}

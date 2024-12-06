@@ -8,10 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         #t{
-            font-size: 12px
+            font-size: 11px
         }
         #h{
-            font-size: 18px;
+            font-size: 15px;
             font-weight: bold;
         }
         .text-end{
@@ -30,6 +30,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col mx-auto p-2">
+                <div class="row">
+                    <div class="col text-center">
+                        <img src="{{ asset('images/logo/logo.png') }}" height="60px" width="60px">
+                    </div>
+                </div>
 
                 <div id="h" class="row">
                     <div class="col text-center">TIGER MUAYTHAI (PHUKET)</div>
@@ -38,10 +43,21 @@
 
                 @foreach (session('cart') as $id => $item)
                     <div class="row">
-                        <div id="t" class="col">{{ $item['name'] }} | จำนวน : {{ $item['quantity'] }}</div>
+                        <div id="t" class="col">{{ $item['name'] }} จำนวน : {{ $item['quantity'] }}</div>
                         <div id="t" class="col text-end">{{ number_format($item['quantity'] * $item['price'], 2) }}</div>
                     </div>
                 @endforeach
+
+                @if ($data['discount'] != 0)
+                    <div class="row">
+                        <div id="t" class="col">ส่วนลด : {{ $data['discount'] }} %</div>
+                        <div id="t" class="col text-end">{{ number_format($data['netDiscount'],2) }}</div>
+                    </div>
+                    <div class="row">
+                        <div id="t" class="col">ลบส่วนลดแล้วคงเหลือ : </div>
+                        <div id="t" class="col text-end">{{ number_format($data['netTotal'],2) }}</div>
+                    </div>
+                @endif
 
                 <div class="row">
                     <div id="t" class="col">ภาษีมูลค่าเพื่ม : {{ $data['net'] }} %</div>
@@ -63,12 +79,7 @@
                     <div id="t" class="col">หมายเลขบัตร</div>
                     <div id="t" class="col text-end">{{ $data['code'] }}</div>
                 </div>
-
-                <div class="row">
-                    <div id="t" class="col">ส่วนลด</div>
-                    <div id="t" class="col text-end">{{ $data['discount'] }}</div>
-                </div>
-
+          
                 <div class="row">
                     <div id="t" class="col">การจ่าย</div>
                     <div id="t" class="col text-end">{{ $data['payment'] }}</div>
@@ -108,13 +119,13 @@
 
 </html>
 
-<script>
+{{-- <script>
     window.print();
     setTimeout(function() {
         window.location.href = "{{ route('admin.cart_index') }}";
     }, 1000);
-</script>
+</script> --}}
 
-@php
+{{-- @php
     Session::forget('cart');
-@endphp
+@endphp --}}
