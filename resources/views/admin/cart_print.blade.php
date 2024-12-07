@@ -8,10 +8,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         #t{
-            font-size: 11px
+            font-size: 10px
         }
         #h{
-            font-size: 15px;
+            font-size: 12px;
             font-weight: bold;
         }
         .text-end{
@@ -25,9 +25,8 @@
 
 <body>
 
-{{-- @dump($data) --}}
-
     <div class="container-fluid">
+
         <div class="row">
             <div class="col mx-auto p-2">
                 <div class="row">
@@ -37,16 +36,26 @@
                 </div>
 
                 <div id="h" class="row">
-                    <div class="col text-center">TIGER MUAYTHAI (PHUKET)</div>
-                    <hr>
+                    <div class="col text-center">TIGER MUAY THAI ( TA-IAD PHUKET )</div>
                 </div>
-
+                <hr>
+                @php
+                    $sum = 0;
+                @endphp
                 @foreach (session('cart') as $id => $item)
                     <div class="row">
                         <div id="t" class="col">{{ $item['name'] }} จำนวน : {{ $item['quantity'] }}</div>
                         <div id="t" class="col text-end">{{ number_format($item['quantity'] * $item['price'], 2) }}</div>
                     </div>
+                    @php
+                        $sum += $item['quantity'] * $item['price']
+                    @endphp
                 @endforeach
+
+                <div class="row">
+                    <div id="t" class="col">ราคาสินค้ารวม :</div>
+                    <div id="t" class="col text-end">{{ number_format($sum,2) }}</div>
+                </div>
 
                 @if ($data['discount'] != 0)
                     <div class="row">
@@ -81,7 +90,7 @@
                 </div>
           
                 <div class="row">
-                    <div id="t" class="col">การจ่าย</div>
+                    <div id="t" class="col">จ่ายด้วย :</div>
                     <div id="t" class="col text-end">{{ $data['payment'] }}</div>
                 </div>
 
@@ -110,6 +119,7 @@
 
             </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -119,13 +129,13 @@
 
 </html>
 
-{{-- <script>
+<script>
     window.print();
     setTimeout(function() {
         window.location.href = "{{ route('admin.cart_index') }}";
     }, 1000);
-</script> --}}
+</script>
 
-{{-- @php
+@php
     Session::forget('cart');
-@endphp --}}
+@endphp

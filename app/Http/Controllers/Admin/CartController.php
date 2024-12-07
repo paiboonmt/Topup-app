@@ -128,14 +128,10 @@ class CartController extends Controller
         session(['comment' => $comment]);
 
         if ( $discount != 0) {
-
-
-            $netDiscount = ( $total * $discount ) / 100 ;
-
+            $netDiscount = ( $total * $discount ) / 100 ; // 
             $netTotal = $total - $netDiscount;
-            
             $total = $total - $netDiscount;
-
+            
             if ( $payment == 'cash') {
                 $net = 7;
                 $vat = ( $total * 7 ) / 100 ;
@@ -147,14 +143,13 @@ class CartController extends Controller
                 $vat = 1;
             }
 
-            // dd( $discount , $total , $netDiscount );
-
-            // บันทึกข้อมูล
             $order = new Order;
-            $order->code        = $code;
-            $order->num_bill    = $num_bill;
-            $order->fname       = $customerName;
-            $order->discount    = $netDiscount;
+            $order->code            = $code;
+            $order->num_bill        = $num_bill;
+            $order->fname           = $customerName;
+            $order->discount        = $discount;
+            $order->net_discount    = $netDiscount;
+            $order->sub_discount    = $netTotal;
            
             if ( $net == 7) 
             {
@@ -176,7 +171,7 @@ class CartController extends Controller
             $order->exp_date    = $expDate;
             $order->comment     = $comment;
             $order->user        = Auth::user()->name;
-            // $order->save();
+            $order->save();
         } 
 
         if ( $discount == 0) {
@@ -192,7 +187,8 @@ class CartController extends Controller
                 $vat = 1;
             }
 
-            // dd( $total , $net , $vat );
+            $netDiscount = 0;
+            $netTotal = 0;
 
             // บันทึกข้อมูล
             $order = new Order;
@@ -227,7 +223,6 @@ class CartController extends Controller
 
         $cart = session()->get('cart');
         foreach ($cart as $id => $item) {
-          
             $d = new OrderDetail;
             $d->order_id        = $code; 
             $d->product_id      = $item['id'];
@@ -235,8 +230,7 @@ class CartController extends Controller
             $d->quantity        = $item['quantity'];
             $d->total           = $item['price'] * $item['quantity'] ;
             $d->date            = Carbon::today();
-            // $d->save();
-
+            $d->save();
         }
 
         $data = [
@@ -244,7 +238,7 @@ class CartController extends Controller
             'num_bill'       => $request->num_bill,
             'code'           => $request->code,
             'discount'       => $request->discount,
-            'netDiscount'       => $netDiscount,
+            'netDiscount'    => $netDiscount,
             'netTotal'       => $netTotal,
             'payment'        => $request->payment,
             'staDate'        => $request->staDate,
@@ -253,7 +247,6 @@ class CartController extends Controller
             'comment'        => $request->comment,
             'net'            => $net,
             'vat'            => $vat,
-           
         ];
 
         return view('admin.cart_print',['data' => $data]);
@@ -274,6 +267,7 @@ class CartController extends Controller
             DB::raw('MAX(or.num_bill) as num_bill'),
             DB::raw('MAX(or.fname ) as fname '),
             DB::raw('MAX(or.discount) as discount'),
+            DB::raw('MAX(or.net_discount) as net_discount'),
             DB::raw('MAX(or.vat7) as vat7'),
             DB::raw('MAX(or.vat3) as vat3'),
             DB::raw('MAX(or.net) as net'),

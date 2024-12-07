@@ -10,24 +10,22 @@
             <table class="table" id="example1">
                 <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Bill</th>
+                        <th hidden>Code</th>
+                        <th>หมายเลขบิล</th>
                         <th hidden>name</th>
-                        <th>Product name</th>
-                        <th>discount</th>
-                        <th>vat7</th>
-                        <th>vat3</th>
-                        <th>net</th>
-                        <th>total</th>
-                        <th>payment</th>
-                        <th>user</th>
-                        <th>action</th>
+                        <th>รายการสินค้า</th>
+                        <th>ส่วนลด</th>
+                        <th class="text-center">การเพื่มภาษี</th>
+                        <th>ยอดรวม</th>
+                        <th>การชำระ</th>
+                        <th>ผู้ขาย</th>
+                        <th>จัดการ</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
                         <tr>
-                            <td>{{ $item->code }}</td>
+                            <td hidden>{{ $item->code }}</td>
                             <td>{{ $item->num_bill }}</td>
                             <td hidden>{{ $item->fname }}</td>
                             <td>
@@ -42,10 +40,14 @@
                                         {{ $product->product_names }} | * | {{ $product->quantity }} | {{ $product->total }}<br>
                                 @endforeach
                             </td>   
-                            <td>{{ $item->discount }}</td>
-                            <td>{{ $item->vat7 }}</td>
-                            <td>{{ $item->vat3 }}</td>
-                            <td>{{ number_format($item->net,2) }}</td>
+                            <td>{{ $item->discount }} % / {{  number_format($item->net_discount,2) }}</td>
+                            <td class="text-center">
+                                @if ($item->vat7 != 0)
+                                    {{ $item->vat7 }} % / {{ number_format($item->net,2) }}
+                                @else
+                                    {{ $item->vat3 }} % / {{ number_format($item->net,2) }}
+                                @endif
+                            </td>
                             <td>{{ number_format($item->total,2) }}</td>
                             <td>{{ $item->payment }}</td>
                             <td>{{ $item->user }}</td>
