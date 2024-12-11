@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\admin\BillController;
 use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\admin\CartController;
 use App\Http\Controllers\Admin\CustomerController;
@@ -67,6 +68,12 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/dashboard','index')->name('admin.dashboard');
     });
 
+    // Edit Bill
+    Route::controller(BillController::class)->group(function(){
+        Route::get('/admin/edit_bill/{code}','index')->name('admin.edit_bill');
+        Route::get('/admin/remove_item_bill/{code}/{id}','remove_item_bill')->name('admin.remove_item_bill');
+    });
+
     // CustomerController
     Route::controller(CustomerController::class)->group(function(){
         Route::get('/admin/customer','index')->name('admin.customers');
@@ -111,7 +118,6 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/card_edit', 'edit')->name('admin.card_edit');
         Route::delete('/admin/card_destroy/{id}','destroy')->name('admin.card_destroy');
     });
-
 
     //Report
     Route::get('/admin/report',[TrainerController::class,'index'])->name('admin.report_index');

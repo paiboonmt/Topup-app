@@ -196,6 +196,8 @@ class CartController extends Controller
             $order->num_bill    = $num_bill;
             $order->fname       = $customerName;
             $order->discount    = $discount;
+            $order->net_discount = 0;
+            $order->sub_discount = 0;
            
             if ( $net == 7) 
             {
@@ -299,7 +301,6 @@ class CartController extends Controller
             ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
             ->where('orders.code',$code)
             ->get();
-        
             return view('admin.view_bill',['data' => $data]);
 
     }

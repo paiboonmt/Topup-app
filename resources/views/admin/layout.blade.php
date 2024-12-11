@@ -110,8 +110,15 @@
                             <a href="{{ route('admin.product_index') }}"
                                 class="nav-link {{ request()->routeIs('admin.product_index') ? 'active' : '' }}">
                                 <i class="fab fa-product-hunt nav-icon"></i>
-                                <p>สินค้า | บริการ</p>
+                                <p>สินค้า และ บริการ</p>
                             </a>
+                        </li>
+
+                        <li class="nav-item">
+                             <a href="" class="nav-link">
+                                <i class="far fa-money-bill-alt nav-icon"></i>
+                                <p>วิธีการชำระ</p>
+                             </a>
                         </li>
 
                         {{-- Topup --}}
