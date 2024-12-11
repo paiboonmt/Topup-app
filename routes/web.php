@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('login');
 });
+
 Route::get('/login', function () {
     return view('login');
 });
@@ -86,7 +87,7 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/fighters','index')->name('admin.fighters');
         Route::get('/admin/fighter_profile','show')->name('admin.fighter_profile');
     });
-  
+
     // TopupController
     Route::controller(TopupController::class)->group(function(){
         Route::get('/admin/topup_index','index')->name('admin.topup_index');
