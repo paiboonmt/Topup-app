@@ -87,7 +87,7 @@
                                         @endphp
                                         <td>{{ number_format($net,2) }}</td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                            <a href="{{ route('admin.remove_vat',['code' => $data[0]->code , 'id' => $data[0]->vat7]) }}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endif
@@ -148,6 +148,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="col-6">
                 <div class="card p-1">
                     <div class="row">

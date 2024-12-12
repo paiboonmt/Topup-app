@@ -35,4 +35,11 @@ class BillController extends Controller
     
         return redirect()->back()->withErrors('Failed to delete order detail. It may not exist.');
     }
+
+    public function removeVat( string $code , string $id){
+
+        dd($code,$id);
+
+        // return redirect()->back();
+    }
 }
