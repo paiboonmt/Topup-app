@@ -55,75 +55,66 @@
                                             $sum += $i->price * $i->quantity;
                                         @endphp
                                     @endforeach
-
                                 </tbody>
 
-                                @if ( $data[0]->vat7 != 0 || $data[0]->vat3 != 0 )
-                                 
+                                <tr>
+                                    <td colspan="3">ยอดรวม</td>
+                                    <td>{{ number_format($sum, 2) }}</td>
+                                    <td></td>
+                                </tr>
+
+                                @if ($data[0]->discount != 0)
                                     <tr>
-                                        <td colspan="3">ยอดรวม</td>
-                                        <td>{{ number_format($sum, 2) }}</td>
-                                        <td></td>
+                                        <td>ส่วนลด</td>
+                                        <td colspan="2">{{ $data[0]->discount }} %</td>
+                                        <td>{{ number_format($data[0]->net_discount, 2) }}</td>
+                                        <td>
+                                            <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
                                     </tr>
-
-                                    @if ($data[0]->discount != 0)
-                                        <tr>
-                                            <td>ส่วนลด</td>
-                                            <td colspan="2">{{ $data[0]->discount }} %</td>
-                                            <td>{{ number_format($data[0]->net_discount, 2) }}</td>
-                                            <td>
-                                                <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3"></td>
-                                            <td>{{ number_format($total - $data[0]->net_discount, 2) }}</td>
-                                        </tr>
-                                    @endif
-
-                                    @if ($data[0]->vat7 != 0)
-                                        <tr>
-                                            <td>ภาษี</td>
-                                            <td colspan="2">{{ $data[0]->vat7 }} %</td>
-                                            @php
-                                                $net = ($sum * 7) / 100;
-                                            @endphp
-                                            <td>{{ number_format($net, 2) }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.remove_vat', ['code' => $data[0]->code, 'id' => $data[0]->vat7]) }}"
-                                                    class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endif
-
-                                    @if ($data[0]->vat3 != 0)
-                                        <tr>
-                                            <td>ภาษี</td>
-                                            <td colspan="2">{{ $data[0]->vat3 }} %</td>
-                                            @php
-                                                $net = ($sum * 3) / 100;
-                                            @endphp
-                                            <td>{{ number_format($net, 2) }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.remove_vat', ['code' => $data[0]->code, 'id' => $data[0]->vat3]) }}"
-                                                    class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endif
-
-                                    @if ($data[0]->vat3 == 0 || $data[0]->vat7 == 0)
-                                        @php
-                                            $net = 0;
-                                        @endphp
-                                    @endif
-
                                     <tr>
-                                        <td colspan="3">ยอดรวมทั้งหมด</td>
-                                        <td colspan="2">{{ number_format($sum + $net, 2) }}</td>
-                                        <input type="hidden" value="{{ $sum + $net }}" name="sum">
+                                        <td colspan="3"></td>
+                                        <td>{{ number_format($total - $data[0]->net_discount, 2) }}</td>
                                     </tr>
-
                                 @endif
+
+                                @if ($data[0]->vat7 !== 0)
+                                    <tr>
+                                        <td>ภาษี</td>
+                                        <td colspan="2">{{ $data[0]->vat7 }} %</td>
+                                        @php
+                                            $net = ($sum * 7) / 100;
+                                        @endphp
+                                        <td colspan="2">{{ number_format($net, 2) }}</td>
+                                    </tr>
+                                @endif
+
+                                @if ($data[0]->vat3 !== 0)
+                                    <tr>
+                                        <td>ภาษี</td>
+                                        <td colspan="2">{{ $data[0]->vat3 }} %</td>
+                                        @php
+                                            $net = ($sum * 3) / 100;
+                                        @endphp
+                                        <td>{{ number_format($net, 2) }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.remove_vat', ['code' => $data[0]->code, 'id' => $data[0]->vat3]) }}"
+                                                class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                @endif
+
+                                @if ($data[0]->vat3 === 0 || $data[0]->vat7 === 0)
+                                    @php
+                                        $net = 0;
+                                    @endphp
+                                @endif
+
+                                <tr>
+                                    <td colspan="3">ยอดรวมทั้งหมด</td>
+                                    <td colspan="2">{{ number_format($data[0]->ototal , 2) }}</td>
+                                    <input type="hidden" value="" name="sum">
+                                </tr>
 
                                 <tr>
                                     <td colspan="2">หมายเลขบัตร</td>
@@ -190,21 +181,12 @@
                             <textarea name="comment" class="form-control" cols="30" rows="3">{{ $data[0]->comment }}</textarea>
                         </div>
                     </div>
-                    @if ( $data[0]->vat7 == 0 || $data[0]->vat3 == 0 )
-
-                        <div class="row mt-3">
-                            <div class="col p-2">
-                                <input type="submit" disabled  class="btn btn-success col" value="บันทึกข้อมูล">
-                            </div>
+                   
+                    <div class="row mt-3">
+                        <div class="col p-2">
+                            <input type="submit" class="btn btn-success col" value="บันทึกข้อมูล">
                         </div>
-
-                        <div class="row mt-2">
-                            <div class="col p-2">
-                                <p class="text text-danger text-center">เพื่มวิธีการชำระ</p>
-                            </div>
-                        </div>
-
-                    @endif
+                    </div>
 
                 </div>
             </div>

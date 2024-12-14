@@ -24,6 +24,7 @@
 </head>
 
 <body class="sidebar-mini layout-fixed" style="height: auto;">
+
     <div class="wrapper">
 
         <!-- Navbar -->
@@ -115,7 +116,8 @@
                         </li>
 
                         <li class="nav-item">
-                             <a href="" class="nav-link">
+                             <a href="{{ route('admin.payment') }}" 
+                                class="nav-link {{ request()->routeIs('admin.payment') ? 'active' : '' }}">
                                 <i class="far fa-money-bill-alt nav-icon"></i>
                                 <p>วิธีการชำระ</p>
                              </a>

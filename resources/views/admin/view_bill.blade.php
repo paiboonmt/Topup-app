@@ -24,7 +24,7 @@
                             </a>
                         </div>
                         <div class="col">
-                            <a href="{{ route('admin.reprint_ticket',$data[0]->code) }}" class="btn btn-info" style="width: 250px">
+                            <a href="{{ route('admin.reprint_ticket',$data[0]->code) }}" class="btn btn-info" style="width: 150px">
                                 <i class="fas fa-print"> Print</i>
                             </a>
                         </div>

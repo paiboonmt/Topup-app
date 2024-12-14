@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CardController;
 use App\Http\Controllers\admin\CartController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\FighterController;
+use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
@@ -46,6 +47,14 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::post('/admin/product','store')->name('admin.product_create');
         Route::post('/admin/product_update','update')->name('admin.product_update');
         Route::delete('admin/product/{id}','delete')->name('admin.product_delete');
+    });
+
+    // payment
+    Route::controller(PaymentController::class)->group(function() {
+        Route::get('/admin/payment','index')->name('admin.payment');
+        Route::post('/admin/payment_create','create')->name('admin.payment_create');
+        Route::post('/admin/payment_update','update')->name('admin.payment_update');
+        Route::delete('/admin/paymeny_destroy/{id}','destroy')->name('admin.payment_destroy');
     });
 
     //CartController
