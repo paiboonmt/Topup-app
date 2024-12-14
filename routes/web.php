@@ -74,6 +74,8 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/edit_bill/{code}','index')->name('admin.edit_bill');
         Route::get('/admin/remove_item_bill/{code}/{id}','remove_item_bill')->name('admin.remove_item_bill');
         Route::get('/admin/remove_vat/{code}/{id}', 'removeVat')->name('admin.remove_vat');
+
+        Route::post('/admin/addItem','addItem')->name('admin.bill_additem');
     });
 
     // CustomerController

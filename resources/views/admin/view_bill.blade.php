@@ -19,10 +19,20 @@
                 <div class="card p-2 bg-dark">
                     <div class="row">
                         <div class="col">
-                            <a href="{{ route('admin.report_ticket') }}" class="btn btn-success" style="width: 150px">ย้อนกลับ</a>
+                            <a href="{{ route('admin.report_ticket') }}" class="btn btn-success" style="width: 150px">
+                                <i class="fas fa-arrow-alt-circle-left"> ย้อนกลับ</i>
+                            </a>
                         </div>
                         <div class="col">
-                            <a href="{{ route('admin.edit_bill',$data[0]->code ) }}" class="btn btn-warning" style="width: 150px; float: right; color: white">แก้ไขบิลนี้</a>
+                            <a href="{{ route('admin.reprint_ticket',$data[0]->code) }}" class="btn btn-info" style="width: 250px">
+                                <i class="fas fa-print"> Print</i>
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a href="{{ route('admin.edit_bill',$data[0]->code ) }}" 
+                                class="btn btn-danger" style="width: 150px; float: right; color: white">
+                                <i class="fas fa-edit"> แก้ไขบิลนี้</i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -42,12 +52,12 @@
                                 <tr>
                                     <td>{{ $i->product_name }}</td>
                                     <td>{{ $i->price }}</td>
-                                    <td>{{ $i->quantity }}</td>
+                                    <td>{{ $i->qty }}</td>
                                     <td>
-                                        {{ number_format($i->price * $i->quantity,2) }}
+                                        {{ number_format($i->price * $i->qty,2) }}
                                     </td>
                                 </tr>
-                                <td hidden>{{ $total =  $i->price * $i->quantity }}</td>
+                                <td hidden>{{ $total =  $i->price * $i->qty }}</td>
                             @endforeach
                         </tbody>
 

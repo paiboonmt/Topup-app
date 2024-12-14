@@ -18,10 +18,26 @@ class BillController extends Controller
         return view('admin.bill.edit_bill',['data' => $data]);
     }
 
-    public function remove_item_bill( string $code , string $id) {
+    public function addItem(Request $request) {
+        dd($request);
+    }
+
+    public function remove_item_bill( string $code , string $id ) {
 
         if (empty($code) || empty($id)) {
             return redirect()->back()->withErrors('Invalid order or product ID.');
+        }
+
+        if ( !empty($code) || !empty($id) ) {
+
+            $count = DB::table('order_details')
+            ->where( 'order_id' , $code )
+            ->count();
+
+            if ( $count == 1 ) {
+                return redirect()->back()->with('msgerror', 'ไม่สามารถลบรายการได้ เพราะมีรายการเดียว !');
+            } 
+
         }
 
         $deleted = DB::table('order_details')
@@ -38,7 +54,31 @@ class BillController extends Controller
 
     public function removeVat( string $code , string $id){
 
-        dd($code,$id);
+        // dd($code,$id);
+
+        if ( $id == 7) {
+            $deleted = DB::table('orders')
+            ->where('code',$code)
+            ->where('vat7',$id)
+            ->update([
+                'vat7' => 0,
+                'net'  => 0 
+            ]);
+        } else if ( $id == 3) {
+            $deleted = DB::table('orders')
+            ->where('code',$code)
+            ->where('vat3',$id)
+            ->update([
+                'vat3' => 0,
+                'net'  => 0 
+            ]);
+        }
+
+
+        if ($deleted) {
+            return redirect()->back();
+        }
+        return redirect()->back()->withErrors('Failed to delete order detail. It may not exist.');
 
         // return redirect()->back();
     }

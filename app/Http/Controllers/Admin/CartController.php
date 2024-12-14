@@ -96,7 +96,7 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function checkOut( Request $request)
+    public function checkOut( Request $request )
     {
         $request->validate(
             [
@@ -277,14 +277,14 @@ class CartController extends Controller
             DB::raw('MAX(or.payment) as payment'),
             DB::raw('MAX(or.user) as user')
         )
-        ->whereDate('or.created_at', Carbon::today())
+        // ->whereDate('or.created_at', Carbon::today())  
         ->groupBy('or.code')
         ->get();
 
         return view('admin.report_ticket',['data' => $data ]);
     }
 
-    public function reportDelete(string $code)
+    public function reportDelete( string $code )
     {
         $order = DB::table('orders')->where('code',$code)->delete();
         $order_detail = DB::table('order_details')->where('order_id',$code)->delete();
@@ -293,12 +293,12 @@ class CartController extends Controller
         
     }
 
-    public function viewBill( string $code){
+    public function viewBill( string $code ){
         
         $data = DB::table('orders')
             ->join('order_details' , 'orders.code' , '=' , 'order_details.order_id' )
             ->join('products' ,'order_details.product_id' , '=' , 'products.id')
-            ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
+            ->select('orders.*', 'orders.total AS ototal' ,'order_details.*', 'order_details.quantity as qty' , 'products.*')
             ->where('orders.code',$code)
             ->get();
             return view('admin.view_bill',['data' => $data]);

@@ -121,6 +121,13 @@
                              </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <p>รายงานทั้งหมด</p>
+                            </a>
+                        </li>
+
                         {{-- Topup --}}
                         {{-- <li
                             class="nav-item  {{ request()->routeIs(['admin.topup_index','admin.topup_show']) ? 'menu-open' : '' }}">
@@ -307,6 +314,23 @@
         });
     </script>
 
+
+{{-- Massages --}}
+
+    {{-- bill --}}
+        @if(session('msgerror'))
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '{{ session('msgerror') }}',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
+    {{-- bill --}}
+
     {{-- product --}}
         @if (session('product_create'))
             <script>
@@ -332,6 +356,11 @@
             </script>
         @endif
     {{-- product --}}
+
+
+{{-- Massages --}}
+
+
 
 </body>
 </html>
