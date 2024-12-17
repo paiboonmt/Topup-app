@@ -1,17 +1,22 @@
 @extends('admin.layout')
-@section('title', 'Product')
-
+@section('title', 'จัดการสินค้า ')
 @section('content')
     <div class="row">
         <div class="col-12 p-2">
             <div class="card">
                 <div class="card-header bg-dark">
                     <div class="row">
-                        <div class="col-8">
-                            <h2>Products</h2>
+                        <div class="col">
+                            <h4>Products | สินค้าและบริการ</h4>
                         </div>
-                        <div class="col-4">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#create">เพื่มสินค้า</button>
+                        <div class="col">
+                            <button 
+                                type="button" 
+                                class="btn btn-success" 
+                                data-toggle="modal" 
+                                data-target="#create"
+                                style="float: right; width:200px"
+                            >เพื่มสินค้า</button>
                         </div>
                     </div>
                     <div class="modal fade" id="create" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
