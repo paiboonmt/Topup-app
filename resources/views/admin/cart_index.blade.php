@@ -161,9 +161,14 @@
                                 <span class="input-group-text">ประเภทการจ่าย | Payment</span>
                             </div>
                             <select class="custom-select" name="payment" id="payment" onchange="hideSelectedOption(this)">
-                                <option value="cash">เงินสด</option>
+
+                                @foreach ($payments as $payment)
+                                    <option value="{{ $payment->name .'|'. $payment->value }}">{{ $payment->name }}</option>
+                                @endforeach
+
+                                {{-- <option value="cash">เงินสด</option>
                                 <option value="credit_card">บัตรเครดิต</option>
-                                <option value="monney_card">บัตรแทนเงินสด</option>
+                                <option value="monney_card">บัตรแทนเงินสด</option> --}}
                             </select>
                             <script>
                                 function hideSelectedOption(selectElement) {

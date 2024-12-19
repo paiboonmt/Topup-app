@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Payment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -34,9 +35,9 @@ class CartController extends Controller
             $num_bill = intval($string->num_bill);
             $setNum_bill = $num_bill + 1 ;
         }
-        //-------------------------------------
+        // -------------------------------------
         $codeNumber = round(microtime(true));
-        //-------------------------------------
+        // -------------------------------------
 
         $cart = Session::get('cart', []);
         $total = 0;
@@ -45,13 +46,18 @@ class CartController extends Controller
             $total += $item['quantity'] * $item['price'];
         }
 
+        // -------------------------------------
+        $payments = Payment::all();
+        // -------------------------------------
+
         return view('admin.cart_index',
             [
                 'products'      => $products,
                 'setNum_bill'   => $setNum_bill,
                 'cart'          => $cart,
                 'total'         => $total,
-                'codeNumber'    => $codeNumber
+                'codeNumber'    => $codeNumber,
+                'payments'      => $payments
             ]    
         );
     }
@@ -106,6 +112,8 @@ class CartController extends Controller
                 'customerName'  => 'required'
             ]
         );
+
+        dd($request->input());
 
         $total          = $request->total;
         $num_bill       = $request->num_bill;
