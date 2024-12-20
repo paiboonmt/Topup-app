@@ -53,7 +53,7 @@
                             <td>{{ $item->user }}</td>
                             <td>
                                 <a href="{{ route('admin.reprint_ticket' , $item->code ) }}" class="btn btn-success btn-sm"><i class="fas fa-print"></i></a>
-                                <a href="{{ route('admin.view_bill' , $item->code) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('admin.edit_bill' , $item->code) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                 <a href="{{ route('admin.reportDelete' , $item->code) }}" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจแล้วใช่ไหมที่จะลบข้อมูล') ">
                                     <i class="fas fa-trash"></i>
                                 </a>

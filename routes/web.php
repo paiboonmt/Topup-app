@@ -69,7 +69,7 @@ Route::middleware(['auth','admin'])->group(function(){
         // report
         Route::get('/admin/report_ticket','reportTicket')->name('admin.report_ticket');
         Route::get('/admin/reportDelete/{id}','reportDelete')->name('admin.reportDelete');
-        Route::get('/admin/viewBill/{code}','viewBill')->name('admin.view_bill');
+        // Route::get('/admin/viewBill/{code}','viewBill')->name('admin.view_bill');
         Route::get('/admin/reprint_ticket/{id}','rePrintTicket')->name('admin.reprint_ticket');
     });
 
@@ -83,7 +83,7 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/edit_bill/{code}','index')->name('admin.edit_bill');
         Route::get('/admin/remove_item_bill/{code}/{id}','remove_item_bill')->name('admin.remove_item_bill');
         Route::get('/admin/remove_vat/{code}/{id}', 'removeVat')->name('admin.remove_vat');
-
+        Route::post('/admin/update_bill/{code}','update')->name('admin.update_bill');
         Route::post('/admin/addItem','addItem')->name('admin.bill_additem');
     });
 

@@ -82,4 +82,8 @@ class BillController extends Controller
 
         // return redirect()->back();
     }
+
+    public function update(Request $request , string $code) {
+        dd($request);
+    }
 }

@@ -112,8 +112,8 @@ class CartController extends Controller
                 'customerName'  => 'required'
             ]
         );
-
-        dd($request->input());
+    
+        // dd($request->input(), $payment_name , $payment_value);
 
         $total          = $request->total;
         $num_bill       = $request->num_bill;
@@ -134,6 +134,10 @@ class CartController extends Controller
         session(['expDate' => $expDate]);
         session(['customerName' => $customerName]);
         session(['comment' => $comment]);
+
+        $selectOption = explode('|',$request->input('payment'));
+        $payment_name = $selectOption[0];
+        $payment_value = $selectOption[1];
 
         if ( $discount != 0) {
             $netDiscount = ( $total * $discount ) / 100 ; // 
@@ -184,13 +188,13 @@ class CartController extends Controller
 
         if ( $discount == 0) {
 
-            if ( $payment == 'cash') {
+            if ( $payment_value == 7 ) {
                 $net = 7;
                 $vat = ( $total * 7 ) / 100 ;
-            } elseif ( $payment == 'credit_card') {
+            } elseif ( $payment_value == 3 ) {
                 $net = 3;
                 $vat = ( $total * 3 ) / 100 ;
-            } elseif ( $payment == 'monney_card' ) {
+            } elseif ( $$payment_value == 0 ) {
                 $net = 1;
                 $vat = 1;
             }
@@ -222,7 +226,7 @@ class CartController extends Controller
             
             $order->net         = $vat;
             $order->total       = $total;
-            $order->payment     = $payment;
+            $order->payment     = $payment_name;
             $order->sta_date    = $staDate;
             $order->exp_date    = $expDate;
             $order->comment     = $comment;
