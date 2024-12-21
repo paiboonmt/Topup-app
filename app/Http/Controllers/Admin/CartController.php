@@ -194,9 +194,9 @@ class CartController extends Controller
             } elseif ( $payment_value == 3 ) {
                 $net = 3;
                 $vat = ( $total * 3 ) / 100 ;
-            } elseif ( $$payment_value == 0 ) {
+            } elseif ( $payment_value == 0 ) {
                 $net = 1;
-                $vat = 1;
+                $vat = 0;
             }
 
             $netDiscount = 0;
@@ -221,6 +221,11 @@ class CartController extends Controller
             {
                 $order->vat7        = 0;
                 $order->vat3        = $net;
+                $total              = $total+$vat;
+            }
+            else {
+                $order->vat7        = 0;
+                $order->vat3        = 0;
                 $total              = $total+$vat;
             }
             

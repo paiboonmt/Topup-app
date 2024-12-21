@@ -101,7 +101,7 @@
 
                         <li class="nav-item">
                             <a href="{{ route('admin.report_ticket') }}"
-                                class="nav-link {{ request()->routeIs(['admin.report_ticket','admin.view_bill','admin.edit_bill']) ? 'active' : '' }}">
+                                class="nav-link {{ request()->routeIs(['admin.report_ticket', 'admin.view_bill', 'admin.edit_bill']) ? 'active' : '' }}">
                                 <i class="fas fa-clipboard-list nav-icon"></i>
                                 <p>รายงานการขาย</p>
                             </a>
@@ -116,17 +116,25 @@
                         </li>
 
                         <li class="nav-item">
-                             <a href="{{ route('admin.payment') }}" 
+                            <a href="{{ route('admin.payment') }}"
                                 class="nav-link {{ request()->routeIs('admin.payment') ? 'active' : '' }}">
                                 <i class="far fa-money-bill-alt nav-icon"></i>
                                 <p>วิธีการชำระ</p>
-                             </a>
+                            </a>
                         </li>
 
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="fas fa-clipboard-list nav-icon"></i>
-                                <p>รายงานทั้งหมด</p>
+                                <p>Teamplate</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.discount_index') }}" 
+                                class="nav-link {{ request()->routeIs('admin.discount_index') ? 'active' : '' }}">
+                                <i class="fas fa-clipboard-list nav-icon"></i>
+                                <p>ส่วนลด</p>
                             </a>
                         </li>
 
@@ -317,52 +325,53 @@
     </script>
 
 
-{{-- Massages --}}
+    {{-- Massages --}}
 
     {{-- bill --}}
-        @if(session('msgerror'))
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: '{{ session('msgerror') }}',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            </script>
-        @endif
+    @if (session('msgerror'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '{{ session('msgerror') }}',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     {{-- bill --}}
 
     {{-- product --}}
-        @if (session('product_create'))
-            <script>
-                Swal.fire({
-                    title: "Good job!",
-                    text: '{{ session('product_create') }}',
-                    icon: "success",
-                    timer: 2000, // optional auto-close timer
-                    showConfirmButton: false
-                });
-            </script>
-        @endif
+    @if (session('product_create'))
+        <script>
+            Swal.fire({
+                title: "Good job!",
+                text: '{{ session('product_create') }}',
+                icon: "success",
+                timer: 2000, // optional auto-close timer
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 
-        @if (session('product_update'))
-            <script>
-                Swal.fire({
-                    title: "Good job!",
-                    text: '{{ session('product_update') }}',
-                    icon: "success",
-                    timer: 2000, // optional auto-close timer
-                    showConfirmButton: false
-                });
-            </script>
-        @endif
+    @if (session('product_update'))
+        <script>
+            Swal.fire({
+                title: "Good job!",
+                text: '{{ session('product_update') }}',
+                icon: "success",
+                timer: 2000, // optional auto-close timer
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     {{-- product --}}
 
 
-{{-- Massages --}}
+    {{-- Massages --}}
 
 
 
 </body>
+
 </html>

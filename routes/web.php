@@ -10,6 +10,7 @@ use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\Md\MdController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Trainer\HomeController;
@@ -40,7 +41,13 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::middleware(['auth','admin'])->group(function(){
-
+    // DiscountController
+    Route::controller(DiscountController::class)->group(function(){
+        Route::get('/admin/discount','index')->name('admin.discount_index');
+        Route::post('/admin/discount','store')->name('admin.discount_create');
+        Route::post('/admin/discount_update','update')->name('admin.discount_update');
+        Route::delete('/admin/discount/{id}','delete')->name('admin.discount_delete');
+    });
     // ProductController
     Route::controller(ProductController::class)->group(function(){
         Route::get('/admin/product','index')->name('admin.product_index');
