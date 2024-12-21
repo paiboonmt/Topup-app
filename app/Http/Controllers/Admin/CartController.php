@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Discount;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Payment;
@@ -50,6 +51,8 @@ class CartController extends Controller
         $payments = Payment::all();
         // -------------------------------------
 
+        $discounts = Discount::all();
+
         return view('admin.cart_index',
             [
                 'products'      => $products,
@@ -57,7 +60,8 @@ class CartController extends Controller
                 'cart'          => $cart,
                 'total'         => $total,
                 'codeNumber'    => $codeNumber,
-                'payments'      => $payments
+                'payments'      => $payments,
+                'discounts'     => $discounts
             ]    
         );
     }
@@ -113,12 +117,10 @@ class CartController extends Controller
             ]
         );
     
-        // dd($request->input(), $payment_name , $payment_value);
-
         $total          = $request->total;
         $num_bill       = $request->num_bill;
         $code           = $request->code;
-        $discount       = $request->discount;
+        // $discount       = $request->discount;
         $payment        = $request->payment;
         $staDate        = $request->staDate;
         $expDate        = $request->expDate;
@@ -128,7 +130,7 @@ class CartController extends Controller
         session(['total' => $total]);
         session(['num_bill' => $num_bill]);
         session(['code' => $code]);
-        session(['discount' => $discount]);
+        // session(['discount' => $discount]);
         session(['payment' => $payment]);
         session(['staDate' => $staDate]);
         session(['expDate' => $expDate]);
@@ -139,40 +141,53 @@ class CartController extends Controller
         $payment_name = $selectOption[0];
         $payment_value = $selectOption[1];
 
-        if ( $discount != 0) {
-            $netDiscount = ( $total * $discount ) / 100 ; // 
+        $selectOptionDiscount = explode('|',$request->input('discount'));
+        $discount_name = $selectOptionDiscount[0];
+        $discount_value = $selectOptionDiscount[1];
+
+
+        // dump($request->all(),$selectOptionDiscount,$discount_name,$discount_value , $payment_value );
+
+
+        // มีส่วนลด และ ภาษี และ ราคาสุทธิ และ ราคาสุทธิที่ต้องจ่าย และ บันทึกข้อมูล ลงฐานข้อมูล 
+        if ( $discount_value != 0) {
+
+            $netDiscount = ( $total * $discount_value ) / 100 ; // 
             $netTotal = $total - $netDiscount;
             $total = $total - $netDiscount;
+
+            // dd($netDiscount,$netTotal,$total);
             
-            if ( $payment == 'cash') {
+            if ( $payment_value == 7 ) {
                 $net = 7;
                 $vat = ( $total * 7 ) / 100 ;
-            } elseif ( $payment == 'credit_card') {
+            } elseif ( $payment_value == 3 ) {
                 $net = 3;
                 $vat = ( $total * 3 ) / 100 ;
-            } elseif ( $payment == 'monney_card' ) {
+            } elseif ( $payment_value == 0 ) {
                 $net = 1;
-                $vat = 1;
+                $vat = 0;
             }
 
             $order = new Order;
             $order->code            = $code;
             $order->num_bill        = $num_bill;
             $order->fname           = $customerName;
-            $order->discount        = $discount;
+            $order->discount        = $discount_value;
             $order->net_discount    = $netDiscount;
             $order->sub_discount    = $netTotal;
            
-            if ( $net == 7) 
-            {
+            if ( $net == 7) {
                 $order->vat7        = $net;
                 $order->vat3        = 0 ;
                 $total              = $total+$vat;
-            } 
-            elseif ( $net == 3 ) 
-            {
+            } elseif ( $net == 3 ) {
                 $order->vat7        = 0;
                 $order->vat3        = $net;
+                $total              = $total+$vat;
+            } else {
+                $order->vat7        = 0;
+                $order->vat3        = 0;
                 $total              = $total+$vat;
             }
             
@@ -186,7 +201,8 @@ class CartController extends Controller
             $order->save();
         } 
 
-        if ( $discount == 0) {
+        // ไม่มีส่วนลด และ ภาษี และ ราคาสุทธิ และ ราคาสุทธิที่ต้องจ่าย และ บันทึกข้อมูล ลงฐานข้อมูล
+        if ( $discount_value == 0) {
 
             if ( $payment_value == 7 ) {
                 $net = 7;
@@ -207,23 +223,20 @@ class CartController extends Controller
             $order->code        = $code;
             $order->num_bill    = $num_bill;
             $order->fname       = $customerName;
-            $order->discount    = $discount;
+            $order->discount    = $discount_value;
             $order->net_discount = 0;
             $order->sub_discount = 0;
            
-            if ( $net == 7) 
-            {
+            if ( $net == 7)  {
                 $order->vat7        = $net;
                 $order->vat3        = 0 ;
                 $total              = $total+$vat;
-            } 
-            elseif ( $net == 3 ) 
+            } elseif ( $net == 3 ) 
             {
                 $order->vat7        = 0;
                 $order->vat3        = $net;
                 $total              = $total+$vat;
-            }
-            else {
+            } else {
                 $order->vat7        = 0;
                 $order->vat3        = 0;
                 $total              = $total+$vat;
@@ -256,10 +269,10 @@ class CartController extends Controller
             'total'          => $total,
             'num_bill'       => $request->num_bill,
             'code'           => $request->code,
-            'discount'       => $request->discount,
+            'discount'       => $discount_value,
             'netDiscount'    => $netDiscount,
             'netTotal'       => $netTotal,
-            'payment'        => $request->payment,
+            'payment'        => $payment_name,
             'staDate'        => $request->staDate,
             'expDate'        => $request->expDate,
             'customerName'   => $request->customerName,
@@ -294,7 +307,7 @@ class CartController extends Controller
             DB::raw('MAX(or.payment) as payment'),
             DB::raw('MAX(or.user) as user')
         )
-        // ->whereDate('or.created_at', Carbon::today())  
+        ->whereDate('or.created_at', Carbon::today())  
         ->groupBy('or.code')
         ->get();
 

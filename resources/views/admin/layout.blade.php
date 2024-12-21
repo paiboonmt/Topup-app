@@ -124,19 +124,21 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('admin.discount_index') }}" 
+                                class="nav-link {{ request()->routeIs('admin.discount_index') ? 'active' : '' }}">
+                                <i class="fas fa-percentage nav-icon"></i>
+                                <p>ส่วนลด</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="fas fa-clipboard-list nav-icon"></i>
                                 <p>Teamplate</p>
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('admin.discount_index') }}" 
-                                class="nav-link {{ request()->routeIs('admin.discount_index') ? 'active' : '' }}">
-                                <i class="fas fa-clipboard-list nav-icon"></i>
-                                <p>ส่วนลด</p>
-                            </a>
-                        </li>
+                        
 
                         {{-- Topup --}}
                         {{-- <li

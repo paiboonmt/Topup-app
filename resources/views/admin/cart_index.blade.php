@@ -147,11 +147,10 @@
                                 <span class="input-group-text">ส่วนลด | Discount</span>
                             </div>
                             <select class="custom-select" name="discount">
-                                <option value="0">0 %</option>
-                                <option value="3">3 %</option>
-                                <option value="5">5 %</option>
-                                <option value="10">10 %</option>
-                                <option value="15">15 %</option>
+                                @foreach ($discounts as $discount)
+                                <option value="{{ 'ไม่มีส่วนลด' . '|' . 0 }}">ไม่มีส่วนลด</option>
+                                    <option value="{{$discount->discount_type .'|'. $discount->discount_value }}">{{ $discount->discount_type }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -165,10 +164,7 @@
                                 @foreach ($payments as $payment)
                                     <option value="{{ $payment->name .'|'. $payment->value }}">{{ $payment->name }}</option>
                                 @endforeach
-
-                                {{-- <option value="cash">เงินสด</option>
-                                <option value="credit_card">บัตรเครดิต</option>
-                                <option value="monney_card">บัตรแทนเงินสด</option> --}}
+                      
                             </select>
                             <script>
                                 function hideSelectedOption(selectElement) {

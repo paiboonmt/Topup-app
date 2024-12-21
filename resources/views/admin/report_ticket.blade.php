@@ -35,6 +35,7 @@
                                     ->where('order_id', $item->code)
                                     ->groupBy('order_id','product_id')
                                     ->get();
+                                    
                                 @endphp
                                 @foreach ($products as $product)
                                         {{ $product->product_names }} | * | {{ $product->quantity }} | {{ $product->total }}<br>

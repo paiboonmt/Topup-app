@@ -39,6 +39,7 @@
                     <div class="col text-center">TIGER MUAY THAI ( TA-IAD PHUKET )</div>
                 </div>
                 <hr>
+
                 @php
                     $sum = 0;
                 @endphp
