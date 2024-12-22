@@ -59,7 +59,7 @@
                                     </tbody>
 
                                     <tr>
-                                        <td colspan="3">ยอดรวม</td>
+                                        <td colspan="3">ยอดรวมสินค้า</td>
                                         <td>{{ number_format($sum, 2) }}</td>
                                         <td></td>
                                     </tr>
@@ -70,12 +70,14 @@
                                             <td colspan="2">{{ $data[0]->discount }} %</td>
                                             <td>{{ number_format($data[0]->net_discount, 2) }}</td>
                                             <td>
-                                                <a href="" class="btn btn-sm btn-danger"><i
-                                                        class="fas fa-trash"></i></a>
+                                                <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="3"></td>
+                                            @php
+                                                $total = 0;
+                                            @endphp
                                             <td>{{ number_format($total - $data[0]->net_discount, 2) }}</td>
                                         </tr>
                                     @endif
@@ -115,7 +117,7 @@
                                     <tr>
                                         <td colspan="3">ยอดรวมทั้งหมด</td>
                                         <td colspan="2">{{ number_format($data[0]->ototal, 2) }}</td>
-                                        <input type="hidden" value="" name="sum">
+                                        <input type="hidden" value="{{ $data[0]->ototal }}" name="sum">
                                     </tr>
 
                                     <tr>

@@ -84,6 +84,6 @@ class BillController extends Controller
     }
 
     public function update(Request $request , string $code) {
-        dd($request);
+        dd($request->all());
     }
 }

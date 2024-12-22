@@ -148,7 +148,6 @@
                             </div>
                             <select class="custom-select" name="discount">
                                 @foreach ($discounts as $discount)
-                                <option value="{{ 'ไม่มีส่วนลด' . '|' . 0 }}">ไม่มีส่วนลด</option>
                                     <option value="{{$discount->discount_type .'|'. $discount->discount_value }}">{{ $discount->discount_type }}</option>
                                 @endforeach
                             </select>
