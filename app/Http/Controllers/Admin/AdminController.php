@@ -13,7 +13,30 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $salesData = DB::table('orders')
+            ->select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('SUM(total) as total_sales')
+            )
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
+        // แปลงข้อมูลเป็นรูปแบบที่ใช้กับ Chart.js
+        $data = [
+            'labels' => $salesData->pluck('month')->map(function ($month) {
+                return date("F", mktime(0, 0, 0, $month, 1)); // แปลงเลขเดือนเป็นชื่อเดือน
+            }),
+            'datasets' => [
+                [
+                    'label' => 'ยอดขายรายเดือน',
+                    'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
+                    'borderColor' => 'rgba(75, 192, 192, 1)',
+                    'data' => $salesData->pluck('total_sales'),
+                ]
+            ],
+        ];
+        return view('admin.dashboard', compact('data'));
     }
 
     /**

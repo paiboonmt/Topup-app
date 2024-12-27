@@ -38,31 +38,25 @@
             </ul>
 
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
-                <!-- User Dropdown Menu -->
+            {{-- <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-
                     <a class="nav-link" data-toggle="dropdown" href="#">
-                        {{ Auth::user()->name }}
+                       ยินดีต้อนรับ : {{ Auth::user()->name }}
                     </a>
-
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
-
-                        <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a href="route('logout')" class="dropdown-item dropdown-footer"
                                 onclick="event.preventDefault();
-                    this.closest('form').submit();">
+                                this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </a>
                         </form>
-
                     </div>
 
                 </li>
-            </ul>
+            </ul> --}}
         </nav>
         <!-- /.navbar -->
 
@@ -75,12 +69,31 @@
                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">WEB APPLICATION</span>
             </a>
+
+            <a class="brand-link" data-toggle="dropdown" href="#">
+                ยินดีต้อนรับ : {{ Auth::user()->name }}
+             </a>
+
+             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <div class="dropdown-divider"></div>
+
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a href="route('logout')" class="dropdown-item dropdown-footer"
+                        onclick="event.preventDefault();
+                        this.closest('form').submit();">
+                        {{ __('Log Out') }}
+                    </a>
+                </form>
+
+            </div>
+
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         {{-- Dashboard --}}
                         <li class="nav-item">
@@ -124,7 +137,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('admin.discount_index') }}" 
+                            <a href="{{ route('admin.discount_index') }}"
                                 class="nav-link {{ request()->routeIs('admin.discount_index') ? 'active' : '' }}">
                                 <i class="fas fa-percentage nav-icon"></i>
                                 <p>ส่วนลด</p>
@@ -138,7 +151,7 @@
                             </a>
                         </li>
 
-                        
+
 
                         {{-- Topup --}}
                         {{-- <li
@@ -318,62 +331,24 @@
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
         $(function() {
-            $("#cart").DataTable({
+            $(".cart").DataTable({
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            }).buttons().container().appendTo('#cart_wrapper .col-md-6:eq(0)');
         });
+
+        $(function() {
+            $("#product").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": false,
+            }).buttons().container().appendTo('#product_wrapper .col-md-6:eq(0)');
+        }), $("#discount").DataTable() ,$("#payments").DataTable();
+
+
+
     </script>
 
-
-    {{-- Massages --}}
-
-    {{-- bill --}}
-    @if (session('msgerror'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: '{{ session('msgerror') }}',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
-    {{-- bill --}}
-
-    {{-- product --}}
-    @if (session('product_create'))
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: '{{ session('product_create') }}',
-                icon: "success",
-                timer: 2000, // optional auto-close timer
-                showConfirmButton: false
-            });
-        </script>
-    @endif
-
-    @if (session('product_update'))
-        <script>
-            Swal.fire({
-                title: "Good job!",
-                text: '{{ session('product_update') }}',
-                icon: "success",
-                timer: 2000, // optional auto-close timer
-                showConfirmButton: false
-            });
-        </script>
-    @endif
-    {{-- product --}}
-
-
-    {{-- Massages --}}
-
-
-
 </body>
-
 </html>

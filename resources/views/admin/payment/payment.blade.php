@@ -60,13 +60,13 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-sm" id="example1">
+                    <table class="table table-sm" id="payments">
                         <thead>
                             <tr>
-                                <th scope="col">ลำดับที่</th>
-                                <th scope="col">ชื่อ วิธีการชำระ</th>
-                                <th scope="col">ค่า เปอร์เซนภาษี</th>
-                                <th scope="col">จัดการ</th>
+                                <th>ลำดับที่</th>
+                                <th>ชื่อ วิธีการชำระ</th>
+                                <th class="text-center">ค่า เปอร์เซนภาษี</th>
+                                <th class="text-right">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,23 +77,23 @@
                               <tr>
                                 <td>{{ $t++ }}</td>
                                 <td>{{ $i->name }}</td>
-                                <td>{{ $i->value }} %</td>
-                                <td>
+                                <td class="text-center">{{ $i->value }} %</td>
+                                <td class="text-right">
                                     <form id="delete-form-{{ $i->id }}" method="POST" action="{{ route('admin.payment_destroy',$i->id) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit{{ $i->id }}">
+                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#edit{{ $i->id }}">
                                             <i class="fas fa-edit">
                                         </i></button>
                                         <input type="hidden" name="id" value="{{ $i->id }}">
-                                        <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $i->id }})">
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="confirmDelete({{ $i->id }},'{{ $i->name }}')">
                                             <i class="fas fa-trash-restore"></i>
                                         </button>
                                     </form>
                                 </td>
                               </tr>
 
-                              <div class="modal fade" id="edit{{ $i->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+                            <div class="modal fade" id="edit{{ $i->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
 
@@ -149,15 +149,16 @@
     </div>
 
     <script>
-        function confirmDelete(id){
+        function confirmDelete(id,name){
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this! item id : " + id,
+                title: 'คุณแน่ใจแล้วใช่ไหม?',
+                text: "ลบรายการ :" + name,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
+                confirmButtonText: 'ต้องการลบ',
+                cancelButtonText: 'ยกเลิก'
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('delete-form-' + id).submit();
