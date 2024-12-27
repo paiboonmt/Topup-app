@@ -345,9 +345,7 @@
                 "autoWidth": false,
             }).buttons().container().appendTo('#product_wrapper .col-md-6:eq(0)');
         }), $("#discount").DataTable() ,$("#payments").DataTable();
-
-
-
+        
     </script>
 
 </body>

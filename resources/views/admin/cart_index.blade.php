@@ -6,7 +6,9 @@
     <div class="row p-1">
 
         <div class="col-6">
+
            @include('admin.cart.cart')
+           
         </div>
 
         <div class="col-6">
