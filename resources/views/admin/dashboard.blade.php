@@ -1,11 +1,9 @@
 @extends('admin.layout')
-
 @section('title', 'Dashboard')
-
 @section('content')
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
+    <h1>Dashboard</h1>
     <div class="row">
         <div class="col-6 p-1">
             <div class="card">
@@ -24,8 +22,6 @@
         <script>
             const data = @json($data);
             console.log(data);
-            
-    
             const ctx = document.getElementById('myChart').getContext('2d');
             new Chart(ctx, {
                 type: 'bar', // เปลี่ยนเป็น 'line', 'pie', 'doughnut', ฯลฯ

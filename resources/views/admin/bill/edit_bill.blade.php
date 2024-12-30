@@ -1,7 +1,5 @@
 @extends('admin.layout')
-
-@section('title', 'Edit bill page')
-
+@section('title', 'แก้ไขบิล')
 @section('content')
 
     <style>
@@ -144,9 +142,9 @@
                                         <td colspan="2">วิธีชำระ</td>
                                         <td colspan="3">
                                             <select class="form-control" name="payment">
-                                                <option value="">เงินสด</option>
-                                                <option value="">บัตรเครดิต</option>
-                                                <option value="">มันนี่การ์ด</option>
+                                                @foreach ($payment as $i)
+                                                    <option value="{{ $i->name .'|'. $i->value }}">{{ $i->name }}</option>
+                                                @endforeach
                                             </select>
                                         </td>
                                     </tr>
@@ -198,4 +196,4 @@
     </form>
 
 @endsection
-<script></script>
+

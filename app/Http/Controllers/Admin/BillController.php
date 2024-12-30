@@ -15,7 +15,11 @@ class BillController extends Controller
         ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
         ->where('orders.code',$code)
         ->get();
-        return view('admin.bill.edit_bill',['data' => $data]);
+
+
+        $payment = DB::table('payments')->get();
+
+        return view('admin.bill.edit_bill',['data' => $data , 'payment' => $payment]);
     }
 
     public function addItem(Request $request) {

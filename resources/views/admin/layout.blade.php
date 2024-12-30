@@ -70,11 +70,11 @@
                 <span class="brand-text font-weight-light">WEB APPLICATION</span>
             </a>
 
-            <a class="brand-link" data-toggle="dropdown" href="#">
-                ยินดีต้อนรับ : {{ Auth::user()->name }}
-             </a>
+            <a class="brand-link" data-toggle="dropdown" href="#" style="text-align: center">
+                {{ Auth::user()->name }}
+            </a>
 
-             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <div class="dropdown-divider"></div>
 
                 <!-- Authentication -->
@@ -93,7 +93,8 @@
             <div class="sidebar">
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
 
                         {{-- Dashboard --}}
                         <li class="nav-item">
@@ -149,6 +150,21 @@
                                 <i class="fas fa-clipboard-list nav-icon"></i>
                                 <p>Teamplate</p>
                             </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a href="route('logout')" class="nav-link"
+                                    onclick="event.preventDefault();
+                                    
+                                    this.closest('form').submit();">
+
+                                    <i class="fas fa-sign-out-alt nav-icon"></i>
+
+                                    {{ __('Log Out') }}
+                                </a>
+                            </form>
                         </li>
 
 
@@ -337,16 +353,25 @@
                 "autoWidth": false,
             }).buttons().container().appendTo('#cart_wrapper .col-md-6:eq(0)');
         });
-
         $(function() {
             $("#product").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "autoWidth": false,
             }).buttons().container().appendTo('#product_wrapper .col-md-6:eq(0)');
-        }), $("#discount").DataTable() ,$("#payments").DataTable();
-        
+        }), $("#discount").DataTable(), $("#payments").DataTable();
     </script>
+
+    {{-- แจ้งเตือน edit_bill --}}
+    @if (session('msgerror'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: '{{ session('msgerror') }}',
+            })
+        </script>
+    @endif
 
 </body>
 </html>
