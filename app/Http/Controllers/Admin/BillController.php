@@ -89,5 +89,14 @@ class BillController extends Controller
 
     public function update(Request $request , string $code) {
         dd($request->all());
+        // "totel" => "1235"
+        // "sum" => "1321.45"
+        // "code" => "1735558832"
+        // "num_bill" => "30122024104"
+        // "fname" => "John Andersion"
+        // "payment" => "Cash|7"
+        // "sta_date" => "2024-12-30"
+        // "exp_date" => "2024-12-30"
+        // "comment" => "ความสุขคือเมื่อสิ่งที่คุณคิด สิ่งที่คุณพูด และสิ่งที่คุณทำนั้นเป็นไปในทางเดียวกัน"
     }
 }

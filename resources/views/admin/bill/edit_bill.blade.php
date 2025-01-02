@@ -16,7 +16,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header bg-dark">
-                        <h1>ฟอร์มแก้ไขบิล</h1>
+                        <h4>ฟอร์มแก้ไขบิล</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -59,6 +59,7 @@
                                     <tr>
                                         <td colspan="3">ยอดรวมสินค้า</td>
                                         <td>{{ number_format($sum, 2) }}</td>
+                                        <input type="hidden" value="{{ $sum }}" name="totel" >
                                         <td></td>
                                     </tr>
 
