@@ -9,7 +9,7 @@
         }
     </style>
 
-    <form action="{{ route('admin.update_bill' , $data[0]->id ) }}" method="post">
+    <form action="{{ route('admin.update_bill' , $data[0]->code ) }}" method="post">
         @csrf
 
         <div class="row p-1">
@@ -39,9 +39,9 @@
                                             <tr>
                                                 <td>{{ $i->product_name }}</td>
                                                 <td>{{ $i->price }}</td>
-                                                <td>{{ $i->quantity }}</td>
+                                                <td>{{ $i->oqut }}</td>
                                                 <td>
-                                                    {{ number_format($i->price * $i->quantity, 2) }}
+                                                    {{ number_format($i->price * $i->oqut, 2) }}
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('admin.remove_item_bill', ['code' => $i->code, 'id' => $i->id]) }}"
@@ -51,7 +51,7 @@
                                                 </td>
                                             </tr>
                                             @php
-                                                $sum += $i->price * $i->quantity;
+                                                $sum += $i->price * $i->oqut;
                                             @endphp
                                         @endforeach
                                     </tbody>
@@ -68,8 +68,8 @@
                                             <td>ส่วนลด</td>
                                             <td colspan="2">{{ $data[0]->discount }} %</td>
                                             <td>{{ number_format($data[0]->net_discount, 2) }}</td>
-                                            <td>
-                                                <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+                                            <td colspan="2">
+                                                <a href="{{ route('admin.remove_discount' , $data[0]->code ) }}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -159,8 +159,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">วันที่เริ่มต้น</span>
                                             </div>
-                                            <input type="date" name="sta_date" class="form-control"
-                                                value="{{ $data[0]->sta_date }}">
+                                            <input type="date" name="sta_date" class="form-control" value="{{ $data[0]->sta_date }}">
                                         </div>
                                     </div>
                                     <div class="col">
@@ -168,8 +167,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">วันที่เริ่มต้น</span>
                                             </div>
-                                            <input type="date" name="exp_date" class="form-control"
-                                                value="{{ $data[0]->exp_date }}">
+                                            <input type="date" name="exp_date" class="form-control" value="{{ $data[0]->exp_date }}">
                                         </div>
                                     </div>
                                 </div>

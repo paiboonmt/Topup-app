@@ -289,40 +289,6 @@ class CartController extends Controller
         return view('admin.cart_print');
     }
 
-    public function reportTicket()
-    {
-        $data = DB::table('orders as or')
-        ->join('order_details as od', 'or.code', '=', 'od.order_id')
-        ->join('products as p', 'od.product_id', '=', 'p.id')
-        ->select('or.code',
-            DB::raw('MAX(od.order_id) as order_id'), 
-            DB::raw('MAX(or.num_bill) as num_bill'),
-            DB::raw('MAX(or.fname ) as fname '),
-            DB::raw('MAX(or.discount) as discount'),
-            DB::raw('MAX(or.net_discount) as net_discount'),
-            DB::raw('MAX(or.vat7) as vat7'),
-            DB::raw('MAX(or.vat3) as vat3'),
-            DB::raw('MAX(or.net) as net'),
-            DB::raw('MAX(or.total) as total'),
-            DB::raw('MAX(or.payment) as payment'),
-            DB::raw('MAX(or.user) as user')
-        )
-        ->whereDate('or.created_at', Carbon::today())  
-        ->groupBy('or.code')
-        ->get();
-
-        return view('admin.report_ticket',['data' => $data ]);
-    }
-
-    public function reportDelete( string $code )
-    {
-        $order = DB::table('orders')->where('code',$code)->delete();
-        $order_detail = DB::table('order_details')->where('order_id',$code)->delete();
-
-        return to_route('admin.report_ticket');
-        
-    }
-
     public function viewBill( string $code ){
         
         $data = DB::table('orders')
@@ -333,20 +299,6 @@ class CartController extends Controller
             ->get();
             return view('admin.view_bill',['data' => $data]);
 
-    }
-
-    public function rePrintTicket( string $code)
-    {      
-        $data = DB::table('orders')
-        ->join('order_details' , 'orders.code' , '=' , 'order_details.order_id' )
-        ->join('products' ,'order_details.product_id' , '=' , 'products.id')
-        ->select('orders.*', 'orders.total AS ototal' ,'order_details.*', 'order_details.quantity AS qty' , 'products.*')
-        ->where('orders.code',$code)
-        ->get();
-
-        // dump($data);
-
-        return view('admin.print.reprint',compact('data'));
     }
 
 }

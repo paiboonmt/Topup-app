@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\FighterController;
 use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TopupController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\DiscountController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Trainer\HomeController;
 use App\Http\Controllers\Trainer\ScanController;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Xml\Report;
 
 // Route::get('/login', function () {
 //     return view('login');
@@ -41,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::middleware(['auth','admin'])->group(function(){
+
     // DiscountController
     Route::controller(DiscountController::class)->group(function(){
         Route::get('/admin/discount','index')->name('admin.discount_index');
@@ -48,6 +51,7 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::post('/admin/discount_update','update')->name('admin.discount_update');
         Route::delete('/admin/discount/{id}','delete')->name('admin.discount_delete');
     });
+
     // ProductController
     Route::controller(ProductController::class)->group(function(){
         Route::get('/admin/product','index')->name('admin.product_index');
@@ -72,12 +76,6 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/cancelcart','cancelCart')->name('admin.cancelCart');
         Route::post('/admin/checkout','checkOut')->name('admin.checkOut');
         Route::get('/admin/print','print')->name('admin.print');
-
-        // report
-        Route::get('/admin/report_ticket','reportTicket')->name('admin.report_ticket');
-        Route::get('/admin/reportDelete/{id}','reportDelete')->name('admin.reportDelete');
-        // Route::get('/admin/viewBill/{code}','viewBill')->name('admin.view_bill');
-        Route::get('/admin/reprint_ticket/{id}','rePrintTicket')->name('admin.reprint_ticket');
     });
 
     // AdminController
@@ -92,6 +90,7 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::get('/admin/remove_vat/{code}/{id}', 'removeVat')->name('admin.remove_vat');
         Route::post('/admin/update_bill/{code}','update')->name('admin.update_bill');
         Route::post('/admin/addItem','addItem')->name('admin.bill_additem');
+        Route::get('/admin/remove_discount/{code}','remove_discount')->name('admin.remove_discount');
     });
 
     // CustomerController
@@ -139,8 +138,13 @@ Route::middleware(['auth','admin'])->group(function(){
         Route::delete('/admin/card_destroy/{id}','destroy')->name('admin.card_destroy');
     });
 
-    //Report
-    Route::get('/admin/report',[TrainerController::class,'index'])->name('admin.report_index');
+    // ReportController
+    Route::controller(ReportController::class)->group(function(){
+        Route::get('/admin/report_ticket','ticket')->name('admin.report_ticket');
+        Route::get('/admin/report_reprint/{code}','rePrintTicket')->name('admin.reprint_ticket');
+        Route::get('/admin/report_delete/{code}','reportDelete')->name('admin.reportDelete');
+    });
+    
 });
 
 // Trainer route

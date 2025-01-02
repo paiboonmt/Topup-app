@@ -12,13 +12,10 @@ class BillController extends Controller
         $data = DB::table('orders')
         ->join('order_details' , 'orders.code' , '=' , 'order_details.order_id' )
         ->join('products' ,'order_details.product_id' , '=' , 'products.id')
-        ->select('orders.*', 'orders.total AS ototal' ,'order_details.*' , 'products.*')
+        ->select('orders.*', 'orders.total AS ototal' ,'order_details.*', 'order_details.quantity AS oqut' , 'products.*')
         ->where('orders.code',$code)
         ->get();
-
-
         $payment = DB::table('payments')->get();
-
         return view('admin.bill.edit_bill',['data' => $data , 'payment' => $payment]);
     }
 
@@ -87,16 +84,59 @@ class BillController extends Controller
         // return redirect()->back();
     }
 
+    public function remove_discount( string $code ) {
+        // dd($code);
+
+        $data = DB::table('orders')
+        ->where('code',$code)
+        ->get();
+
+        foreach ($data as $key => $value) {
+            $total = $value->total;
+            $discount = $value->net_discount;
+        }
+
+        $total = $total + $discount;
+
+        // dd($total);
+
+
+        $deleted = DB::table('orders')
+            ->where('code',$code)
+            ->update([
+                'discount' => 0,
+                'net_discount' => 0,
+                'sub_discount' => 0,
+                'net' => 0,
+                'total' => $total
+            ]);
+
+        if ($deleted) {
+            return redirect()->back();
+        }
+        return redirect()->back()->withErrors('Failed to delete order detail. It may not exist.');
+    }
+
     public function update(Request $request , string $code) {
-        dd($request->all());
-        // "totel" => "1235"
-        // "sum" => "1321.45"
-        // "code" => "1735558832"
-        // "num_bill" => "30122024104"
+
+        $data = DB::table('orders')
+        ->where('code',$code)
+        ->get();
+
+        foreach ($data as $key => $value) {
+            $total = $value->total;
+            $discount = $value->net_discount;
+        }
+
+        dd($total,$discount);
+
+        // "totel" => "800"
+        // "sum" => "800.00"
+        // "code" => "1735788594"
+        // "num_bill" => "2012025101"
         // "fname" => "John Andersion"
         // "payment" => "Cash|7"
-        // "sta_date" => "2024-12-30"
-        // "exp_date" => "2024-12-30"
-        // "comment" => "ความสุขคือเมื่อสิ่งที่คุณคิด สิ่งที่คุณพูด และสิ่งที่คุณทำนั้นเป็นไปในทางเดียวกัน"
+        // "sta_date" => "2025-01-02"
+        // "exp_date" => "2025-01-02"
     }
 }

@@ -1,7 +1,5 @@
 @extends('admin.layout')
-
 @section('title','report')
-
 @section('content')
 
 <div class="row">
