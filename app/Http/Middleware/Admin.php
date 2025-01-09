@@ -22,3 +22,4 @@ class Admin
         return redirect()->back();
     }
 }
+
