@@ -128,7 +128,7 @@ class BillController extends Controller
             $discount = $value->net_discount;
         }
 
-        dd($total,$discount);
+        dd( $request->all() ,$total,$discount);
 
         // "totel" => "800"
         // "sum" => "800.00"

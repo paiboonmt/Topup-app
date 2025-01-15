@@ -120,6 +120,11 @@
                                     </tr>
 
                                     <tr>
+                                        <td colspan="2">วิธีชำระ</td>
+                                        <td colspan="3">{{ $i->payment }}</td>
+                                    </tr>
+
+                                    <tr>
                                         <td colspan="2">หมายเลขบัตร</td>
                                         <td colspan="3">{{ $data[0]->code }}</td>
                                         <input type="hidden" value="{{ $data[0]->code }}" name="code">
