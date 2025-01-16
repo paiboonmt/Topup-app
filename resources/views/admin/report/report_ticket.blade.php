@@ -21,6 +21,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if ()
+                        
+                    @endif
                     @foreach ($data as $item)
                         <tr>
                             <td hidden>{{ $item->code }}</td>
