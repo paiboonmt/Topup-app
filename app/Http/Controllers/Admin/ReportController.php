@@ -35,12 +35,6 @@ class ReportController extends Controller
         ->orderByDesc('or.code')
         ->get();
 
-        // if ($data->isEmpty()) {
-        //     dd('Data เท่ากับ 0');
-        // } else {
-        //     dd($data);
-        // }
-
         return view('admin.report.report_ticket',['data' => $data ]);
     }
 
